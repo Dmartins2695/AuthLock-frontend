@@ -1,0 +1,142 @@
+@mixin displayFlex($direction,$justify: center, $alignC:center, $alignI: center)
+  display: flex
+  flex-direction: $direction
+  justify-content: $justify
+  align-content: $alignC
+  align-items: $alignI
+  flex: 1
+
+
+@mixin centerChildren
+  display: flex
+  justify-content: center
+  align-content: center
+  align-items: center
+
+$headerColor: linear-gradient(90deg, hsla(198, 46%, 63%, 1) 0%, hsla(203, 44%, 33%, 1) 100%)
+$headerTextColor: white
+$bodyColor: #f6f8ff
+$hover: #e5e5e5b8
+
+.body
+  height: 100vh
+  display: flex
+  justify-content: center
+  align-items: center
+
+.container
+  background: white
+  width: 80%
+  min-height: 80%
+  display: grid
+  justify-content: center
+  align-items: center
+  border-radius: 3.5em
+  grid-auto-columns: 1fr
+  grid-template-rows: 0.4fr 1.6fr
+  gap: 0
+
+.headerArea
+  grid-area: 1 / 1 / 2 / 2
+  border-radius: 3.5em 3.5em 0 0
+  background: $headerColor
+  width: 100%
+  height: 100%
+
+.headerRowWrapper
+  height: 100%
+  @include displayFlex(row)
+  padding: 0 1em 0 1em
+
+.headerRowInnerWrapper
+  height: 100%
+  @include displayFlex(row)
+
+.headerColumnLogoWrapper
+  height: 100%
+  @include displayFlex($direction: column, $alignI: flex-start)
+
+.headerColumnDisPlayerWrapper
+  height: 100%
+  @include displayFlex($direction: column, $alignI: flex-end)
+
+.headerColumnInnerWrapper
+  height: 100%
+  @include displayFlex($direction: column, $justify: center)
+
+.headerLogo
+  width: 6em
+  height: auto
+  border-radius: 50%
+  margin-left: 1em
+
+.headerRoundDisPlayer
+  height: 4em
+  width: 4em
+  border-radius: 50%
+  background: $bodyColor
+  margin: .5em 1em 0.5em 1em
+  @include centerChildren
+
+.disPlayersText
+  color: $headerTextColor
+
+.bodyArea
+  grid-area: 2 / 1 / 3 / 2
+  border-radius: 0 0 3.5em 3.5em
+  background: $bodyColor
+  width: 100%
+  height: 100%
+
+.bodyAreaButtonsRowWrapper
+  @include displayFlex(row)
+
+.bodyAreaButtonsColumnWrapper
+  @include displayFlex($direction: column, $alignI: flex-start)
+
+.addPasswordButton
+  color: #2F5D79FF
+  @include displayFlex(row)
+  padding: 0.5em
+  transition: all 150ms ease-in
+  &:hover
+    color: #75B2CCFF
+    cursor: pointer
+
+.bodyDataArea
+  height: 100%
+
+.bodyDataTable
+
+.bodyDataItem
+  display: grid
+  grid-auto-columns: 1fr
+  grid-template-columns: 0.3fr 1.6fr 1.6fr 1.2fr 0.3fr
+  grid-template-rows: 1fr
+  gap: 0 0
+  grid-template-areas: 'favorite website password createdAt weak'
+
+.bodyDataItemFavorite
+  grid-area: favorite
+  @include centerChildren
+  padding: 0.5em 0 0.5em 0
+
+.bodyDataItemWebsite
+  grid-area: website
+  @include centerChildren
+  padding: 0.5em 0 0.5em 0
+
+.bodyDataItePassword
+  grid-area: password
+  @include centerChildren
+  padding: 0.5em 0 0.5em 0
+
+.bodyDataItemCreatedAt
+  grid-area: createdAt
+  @include centerChildren
+  padding: 0.5em 0 0.5em 0
+
+.bodyDataItemWeak
+  grid-area: weak
+  @include centerChildren
+  padding: 0.5em 0 0.5em 0
