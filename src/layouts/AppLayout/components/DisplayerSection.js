@@ -1,5 +1,5 @@
 import React from 'react'
-import classes from '../../../pages/home/Home.module.sass'
+import classes from '../AppLayout.module.sass'
 import { Typography } from '@mui/material'
 
 export const DisplayersSection = () => {

@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router-dom'
-import classes from '../../pages/home/Home.module.sass'
+import classes from './AppLayout.module.sass'
 import { Header } from './components/Header'
 import React from 'react'
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import classes from '../../../pages/home/Home.module.sass'
+import classes from '../AppLayout.module.sass'
 import StarOutlineIcon from '@mui/icons-material/StarOutline'
 import { Typography } from '@mui/material'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
