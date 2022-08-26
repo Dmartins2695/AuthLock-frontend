@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import { alpha, InputBase, Menu, styled } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search'
+import { emailValidator, passwordValidator } from './utils/validators'
 
 const Home = () => {
   const fetchImgFromUnsplash = async (params) => {
@@ -115,7 +116,35 @@ const SearchInput = (props) => {
       <SearchIconWrapper>
         <SearchIcon />
       </SearchIconWrapper>
-      <StyledInputBase placeholder='Search…' inputProps={{ 'aria-label': 'search' }} onChange={(e) => setQuery(e.target.value)} value={query} />
+      <StyledInputBase
+        placeholder='Search…'
+        inputProps={{ 'aria-label': 'search' }}
+        onChange={(e) => setQuery(e.target.value)}
+        value={query}
+      />
     </Search>
   )
+}
+
+const validations = (password, email) => {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const [emailError, setEmailError] = useState({ error: false })
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const [passwordError, setPasswordError] = useState({ error: false })
+  const validationPassword = passwordValidator(password)
+  const validationEmail = emailValidator(email)
+  let valid = true
+  if (validationPassword.error) {
+    setPasswordError(validationPassword)
+    valid = false
+  } else {
+    setPasswordError({ error: false })
+  }
+  if (validationEmail.error) {
+    setEmailError(validationEmail)
+    valid = false
+  } else {
+    setEmailError({ error: false })
+  }
+  return valid
 }

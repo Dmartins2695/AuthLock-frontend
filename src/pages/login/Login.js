@@ -1,26 +1,27 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
 import CssBaseline from '@mui/material/CssBaseline'
 import TextField from '@mui/material/TextField'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import Checkbox from '@mui/material/Checkbox'
 import Link from '@mui/material/Link'
 import Paper from '@mui/material/Paper'
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import Typography from '@mui/material/Typography'
-import { emailValidator, passwordValidator } from '../../utils/validators'
-import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { makeRequestLogin } from '../../utils/httpRequest/httpRequest'
+import AuthContext from '../../context/AuthProvider'
+import { Alert } from '@mui/material'
+import '../../utils/constants'
+import { POST } from '../../utils/constants'
 
 function Copyright(props) {
   return (
     <Typography variant='body2' color='text.secondary' align='center' {...props}>
       {'Copyright © '}
-      <Link color='inherit' href='https://passw.netlify/'>
-        passW
+      <Link color='inherit' href='https://WasW.netlify/'>
+        WasW
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -28,72 +29,58 @@ function Copyright(props) {
   )
 }
 
-export default function Login(props) {
+export default function Login() {
+  // * variables
+  const { setAuth } = useContext(AuthContext)
   let navigate = useNavigate()
+  const location = useLocation()
+  const from = location.state?.from?.pathname || '/dashboard'
+  // * functions
+  const handleResponse = (response) => {
+    const accessToken = response?.data?.token
+    if (accessToken) {
+      setAuth({ userName: user, password, accessToken })
+      navigate(from, { replace: true })
+    } else {
+      setErrorMessage('Missing Access Token')
+    }
+  }
+  const handleError = (error) => {
+    if (!error?.response) {
+      setErrorMessage('No Server Response')
+    } else if (error.response?.status === 401) {
+      setErrorMessage('Unauthorized Request. Fill form with valid credentials')
+    } else {
+      setErrorMessage('Login Failed')
+    }
+  }
   const handleSubmit = (event) => {
-    event.preventDefault()
-    const data = new FormData(event.currentTarget)
-    /*const valid = validations(data.get('password'), data.get('email'))
-    if (!valid) {
-        return
-    }*/
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-      'remember-me': rememberMe
-    })
-    axios({
-      method: 'post',
-      url: 'http://localhost:8080/login',
-      body: {
-        email: data.get('email'),
-        password: data.get('password'),
-        'remember-me': rememberMe
-      },
-      config: {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      }
-    })
-      .then((response) => {
-        if (response.status === 200) {
-          props?.setLoggedIn(true)
-          //   navigate('/dashboard')
-        }
-      })
-      .catch((error) => {
-        var errResp = error.response
-        if (errResp.status === 401) {
-          console.log(error)
-        }
-        props?.setLoggedIn(false)
-      })
-  }
-
-  const validations = (password, email) => {
-    const validationPassword = passwordValidator(password)
-    const validationEmail = emailValidator(email)
-    let valid = true
-    if (validationPassword.error) {
-      setPasswordError(validationPassword)
-      valid = false
-    } else {
-      setPasswordError({ error: false })
+    const eventData = new FormData(event.currentTarget)
+    setUser(eventData.get('email'))
+    setPassword(eventData.get('password'))
+    const data = {
+      userName: user,
+      password: password
     }
-    if (validationEmail.error) {
-      setEmailError(validationEmail)
-      valid = false
-    } else {
-      setEmailError({ error: false })
-    }
-    return valid
+
+    makeRequestLogin({
+      method: POST,
+      data: data,
+      url: '/auth/login',
+      callbackResponse: handleResponse,
+      callbackError: handleError
+    })
   }
+  // * hooks
+  const [user, setUser] = useState < String | null > ('')
+  const [password, setPassword] = useState < String | null > ('')
+  const [errorMessage, setErrorMessage] = useState('')
+  // * useEffects
+  useEffect(() => {
+    setErrorMessage('')
+  }, [user, password])
 
-  const [rememberMe, setRememberMe] = useState(false)
-  const [emailError, setEmailError] = useState({ error: false })
-  const [passwordError, setPasswordError] = useState({ error: false })
-
+  // * Component
   return (
     <Grid container component='main' sx={{ height: '100vh' }}>
       <CssBaseline />
@@ -127,6 +114,7 @@ export default function Login(props) {
             Sign in
           </Typography>
           <Box component='form' noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+            {errorMessage !== '' && <Alert severity='error'>{errorMessage}</Alert>}
             <TextField
               margin='normal'
               required
@@ -136,8 +124,6 @@ export default function Login(props) {
               name='email'
               autoComplete='email'
               autoFocus
-              error={emailError.error}
-              helperText={emailError?.errorMessage}
             />
             <TextField
               margin='normal'
@@ -147,14 +133,12 @@ export default function Login(props) {
               label='Password'
               type='password'
               id='password'
-              error={passwordError.error}
-              helperText={passwordError?.errorMessage}
               autoComplete='current-password'
             />
-            <FormControlLabel
+            {/* <FormControlLabel
               control={<Checkbox value='remember' color='primary' onClick={() => setRememberMe(!rememberMe)} />}
               label='Remember me'
-            />
+            />*/}
             <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
               Sign In
             </Button>
