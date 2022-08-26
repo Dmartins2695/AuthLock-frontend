@@ -1,19 +1,27 @@
 import React, { useState } from 'react'
-import { Navigate, Route, Routes } from 'react-router-dom'
-import { Login } from './pages/login/Login'
+import { Navigate, Outlet, Route, Routes } from 'react-router-dom'
+import Login from './pages/login/Login'
 import AppLayout from './layouts/AppLayout/AppLayout'
 import { Body } from './layouts/AppLayout/components/Body'
 
 const NotFound = () => {
-  return <h1>Not Found</h1>
+  return <div>
+    <Outlet />
+  </div>
 }
 
 const AuthLayout = () => {
-  return <h1>Auth</h1>
+  return (
+    <div>
+      <Outlet />
+    </div>
+  )
 }
 
 const Unauthorized = () => {
-  return <h1>UnAuth</h1>
+  return <div>
+    <Outlet />
+  </div>
 }
 
 function App() {
