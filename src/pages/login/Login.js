@@ -72,8 +72,8 @@ export default function Login() {
     })
   }
   // * hooks
-  const [user, setUser] = useState < String | null > ('')
-  const [password, setPassword] = useState < String | null > ('')
+  const [user, setUser] = useState('')
+  const [password, setPassword] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
   // * useEffects
   useEffect(() => {
