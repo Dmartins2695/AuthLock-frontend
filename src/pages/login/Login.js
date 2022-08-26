@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
 import CssBaseline from '@mui/material/CssBaseline'
@@ -11,10 +11,10 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import Typography from '@mui/material/Typography'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { makeRequestLogin } from '../../utils/httpRequest/httpRequest'
-import AuthContext from '../../context/AuthProvider'
 import { Alert } from '@mui/material'
 import '../../utils/constants'
 import { POST } from '../../utils/constants'
+import useAuth from '../../hooks/useAuth'
 
 function Copyright(props) {
   return (
@@ -31,15 +31,16 @@ function Copyright(props) {
 
 export default function Login() {
   // * variables
-  const { setAuth } = useContext(AuthContext)
+  const { setAuth } = useAuth()
   let navigate = useNavigate()
   const location = useLocation()
   const from = location.state?.from?.pathname || '/dashboard'
   // * functions
   const handleResponse = (response) => {
     const accessToken = response?.data?.token
+    const roles = response?.data?.roles
     if (accessToken) {
-      setAuth({ userName: user, password, accessToken })
+      setAuth({ userName: user, password, accessToken, roles })
       navigate(from, { replace: true })
     } else {
       setErrorMessage('Missing Access Token')
@@ -55,7 +56,9 @@ export default function Login() {
     }
   }
   const handleSubmit = (event) => {
+    event.preventDefault()
     const eventData = new FormData(event.currentTarget)
+    console.log(eventData)
     setUser(eventData.get('email'))
     setPassword(eventData.get('password'))
     const data = {
