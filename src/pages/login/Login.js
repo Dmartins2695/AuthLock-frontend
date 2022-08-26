@@ -57,10 +57,7 @@ export default function Login() {
   }
   const handleSubmit = (event) => {
     event.preventDefault()
-    const eventData = new FormData(event.currentTarget)
-    console.log(eventData)
-    setUser(eventData.get('email'))
-    setPassword(eventData.get('password'))
+    console.log(user, password)
     const data = {
       userName: user,
       password: password
@@ -114,9 +111,9 @@ export default function Login() {
             <AccountCircleIcon />
           </Avatar>
           <Typography component='h1' variant='h5'>
-            Sign in
+            Login in
           </Typography>
-          <Box component='form' noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+          <Box sx={{ mt: 1 }}>
             {errorMessage !== '' && <Alert severity='error'>{errorMessage}</Alert>}
             <TextField
               margin='normal'
@@ -125,6 +122,8 @@ export default function Login() {
               id='email'
               label='Email Address'
               name='email'
+              value={user}
+              onChange={(e) => setUser(e.target.value)}
               autoComplete='email'
               autoFocus
             />
@@ -136,23 +135,25 @@ export default function Login() {
               label='Password'
               type='password'
               id='password'
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               autoComplete='current-password'
             />
             {/* <FormControlLabel
               control={<Checkbox value='remember' color='primary' onClick={() => setRememberMe(!rememberMe)} />}
               label='Remember me'
             />*/}
-            <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
-              Sign In
+            <Button onClick={handleSubmit} fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
+              Login In
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link href='#' variant='body2'>
+                <Link href='/auth/recover-password' variant='body2'>
                   Forgot password?
                 </Link>
               </Grid>
               <Grid item>
-                <Link href='#' variant='body2'>
+                <Link href='/auth/register' variant='body2'>
                   {'Don\'t have an account? Sign Up'}
                 </Link>
               </Grid>

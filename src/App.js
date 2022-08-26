@@ -24,6 +24,7 @@ function App() {
       <Route path='/auth' element={<AuthLayout />}>
         <Route exact path='login' element={<Login />} />
         <Route exact path='register' element={<Login />} />
+        <Route exact path='recover-password' element={<Login />} />
       </Route>
       {/* * Protected Routes*/}
       <Route element={<RequiredAuth allowedRoles={['password:read']} />}>
