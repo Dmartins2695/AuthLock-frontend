@@ -40,7 +40,9 @@ export default function Login() {
     const accessToken = response?.data?.token
     const roles = response?.data?.roles
     if (accessToken) {
-      setAuth({ userName: user, password, accessToken, roles })
+      const o = { userName: user, password, accessToken, roles }
+      console.log(o)
+      setAuth(o)
       navigate(from, { replace: true })
     } else {
       setErrorMessage('Missing Access Token')
@@ -57,7 +59,6 @@ export default function Login() {
   }
   const handleSubmit = (event) => {
     event.preventDefault()
-    console.log(user, password)
     const data = {
       userName: user,
       password: password
