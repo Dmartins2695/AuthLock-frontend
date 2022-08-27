@@ -37,7 +37,7 @@ function App() {
       <Route path='/error' element={<ErrorLayout />}>
         <Route path='unauthorized' element={<Unauthorized />} />
       </Route>
-      <Route path='/*' element={<NotFound />} />
+      <Route path='/*' element={<Navigate replace to='/dashboard' />} />
     </Routes>
   )
 }

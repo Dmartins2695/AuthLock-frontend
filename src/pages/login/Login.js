@@ -37,12 +37,11 @@ export default function Login() {
   const from = location.state?.from?.pathname || '/dashboard'
   // * functions
   const handleResponse = (response) => {
-    const accessToken = response?.data?.token
+    const accessToken = response?.data?.accessToken
+    const refreshToken = response?.data?.refreshToken
     const roles = response?.data?.roles
-    if (accessToken) {
-      const o = { userName: user, password, accessToken, roles }
-      console.log(o)
-      setAuth(o)
+    if (accessToken && refreshToken) {
+      setAuth({ userName: user, password, accessToken, refreshToken, roles })
       navigate(from, { replace: true })
     } else {
       setErrorMessage('Missing Access Token')
