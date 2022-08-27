@@ -6,14 +6,18 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import ShieldIcon from '@mui/icons-material/Shield'
 import StarIcon from '@mui/icons-material/Star'
 import VisibilityIcon from '@mui/icons-material/Visibility'
-import { axiosBase } from '../../../api/axios'
+
 import useAuth from '../../../hooks/useAuth'
+import useRefreshToken from '../../../hooks/useRefreshToken'
+import useAxiosPrivate from '../../../hooks/useAxiosPrivate'
 
 export const Body = () => {
   const { auth } = useAuth()
+  const refresh = useRefreshToken()
+  const axios = useAxiosPrivate()
 
   const getPasswords = async () => {
-    const response = await axiosBase.get(
+    const response = await axios.get(
       '/api/v1/user/stored-passwords/2',
       {
         headers: {
@@ -28,6 +32,9 @@ export const Body = () => {
     <div className={classes.bodyDataArea}>
       <button onClick={getPasswords}>
         get passwords
+      </button>
+      <button onClick={() => refresh()}>
+        refresh
       </button>
       <div className={classes.bodyDataTable}>
         <div className={classes.bodyDataItem} style={{ background: '#e7f4ff' }}>
