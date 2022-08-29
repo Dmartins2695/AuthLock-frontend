@@ -10,22 +10,31 @@ import VisibilityIcon from '@mui/icons-material/Visibility'
 import useAuth from '../../../hooks/useAuth'
 import useRefreshToken from '../../../hooks/useRefreshToken'
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 export const Body = () => {
+  // ? EXAMPLE OF HOW TO USER HTTP REQUESTS
   const { auth } = useAuth()
   const refresh = useRefreshToken()
   const axios = useAxiosPrivate()
+  const navigate = useNavigate()
+  const location = useLocation()
 
   const getPasswords = async () => {
-    const response = await axios.get(
-      '/api/v1/user/stored-passwords/2',
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${auth?.accessToken}`
+    await axios.get(
+      '/api/v1/user/stored-passwords/2'
+    ).then(
+      (response) => {
+        console.log(response)
+      }
+    ).catch(
+      (error) => {
+        if (error.response.status === 403) {
+          navigate('/auth/login', { state: { from: location }, replace: true })
         }
-      })
-    console.log(response)
+      }
+    )
+
   }
 
   return (

@@ -14,6 +14,7 @@ export const makeRequestLogin = ({ method, data, url, callbackResponse, callback
     method: method,
     url: `http://localhost:8080/api/v1${url}`,
     data: data,
+    withCredentials: true,
     headers: {
       'Content-Type': 'application/json'
     }

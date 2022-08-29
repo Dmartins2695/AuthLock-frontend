@@ -1,16 +1,18 @@
 import useAuth from './useAuth'
-import { axiosBase } from '../api/axios'
+import axios from '../api/axios'
 
 const useRefreshToken = () => {
   const { setAuth, auth } = useAuth()
 
   const refresh = async () => {
-    const response = await axiosBase.post('api/v1/auth/refresh-token', {
-      userName: auth?.userName,
-      refreshToken: auth?.refreshToken
-    })
+    const response = await axios.post('api/v1/auth/refresh-token', {
+      userName: auth?.userName
+    }, { withCredentials: true })
     setAuth(prev => {
-      return { ...prev, accessToken: response.data.accessToken, refreshToken: response.data.refreshToken }
+      return {
+        ...prev, accessToken: response.data.accessToken,
+        roles: response.data.roles
+      }
     })
     return response.data.accessToken
   }

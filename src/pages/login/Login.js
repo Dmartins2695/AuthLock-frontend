@@ -38,10 +38,9 @@ export default function Login() {
   // * functions
   const handleResponse = (response) => {
     const accessToken = response?.data?.accessToken
-    const refreshToken = response?.data?.refreshToken
     const roles = response?.data?.roles
-    if (accessToken && refreshToken) {
-      setAuth({ userName: user, password, accessToken, refreshToken, roles })
+    if (accessToken) {
+      setAuth({ userName: user, password, accessToken, roles })
       navigate(from, { replace: true })
     } else {
       setErrorMessage('Missing Access Token')
