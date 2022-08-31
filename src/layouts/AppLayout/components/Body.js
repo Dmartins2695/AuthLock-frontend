@@ -11,6 +11,7 @@ import useAuth from '../../../hooks/useAuth'
 import useRefreshToken from '../../../hooks/useRefreshToken'
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate'
 import { useLocation, useNavigate } from 'react-router-dom'
+import useLogout from '../../../hooks/useLogout'
 
 export const Body = () => {
   // ? EXAMPLE OF HOW TO USER HTTP REQUESTS
@@ -19,6 +20,7 @@ export const Body = () => {
   const axios = useAxiosPrivate()
   const navigate = useNavigate()
   const location = useLocation()
+  const logout = useLogout()
 
   const getPasswords = async () => {
     await axios.get(
@@ -37,6 +39,14 @@ export const Body = () => {
 
   }
 
+  const signOut = async () => {
+    localStorage.clear()
+    await logout()
+    navigate('/auth/login')
+  }
+
+  console.log(auth?.accessToken)
+
   return (
     <div className={classes.bodyDataArea}>
       <button onClick={getPasswords}>
@@ -44,6 +54,9 @@ export const Body = () => {
       </button>
       <button onClick={() => refresh()}>
         refresh
+      </button>
+      <button onClick={() => signOut}>
+        logout
       </button>
       <div className={classes.bodyDataTable}>
         <div className={classes.bodyDataItem} style={{ background: '#e7f4ff' }}>

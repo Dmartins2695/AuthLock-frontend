@@ -11,10 +11,11 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import Typography from '@mui/material/Typography'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { makeRequestLogin } from '../../utils/httpRequest/httpRequest'
-import { Alert } from '@mui/material'
+import { Alert, Checkbox, FormControlLabel } from '@mui/material'
 import '../../utils/constants'
 import { POST } from '../../utils/constants'
 import useAuth from '../../hooks/useAuth'
+import { decrypt } from '../../utils/AESUtils'
 
 function Copyright(props) {
   return (
@@ -31,22 +32,24 @@ function Copyright(props) {
 
 export default function Login() {
   // * variables
-  const { setAuth } = useAuth()
+  const { setAuth, persist, setPersist } = useAuth()
   let navigate = useNavigate()
   const location = useLocation()
   const from = location.state?.from?.pathname || '/dashboard'
   // * functions
   const handleResponse = (response) => {
     const accessToken = response?.data?.accessToken
-    const roles = response?.data?.roles
+    console.log(accessToken)
+    console.log(decrypt('secret', accessToken))
     if (accessToken) {
-      setAuth({ userName: user, password, accessToken, roles })
+      setAuth({ userName: user, accessToken: accessToken })
       navigate(from, { replace: true })
     } else {
       setErrorMessage('Missing Access Token')
     }
   }
   const handleError = (error) => {
+    console.log(error)
     if (!error?.response) {
       setErrorMessage('No Server Response')
     } else if (error.response?.status === 401) {
@@ -70,6 +73,10 @@ export default function Login() {
       callbackError: handleError
     })
   }
+  const togglePersist = () => {
+    setPersist(prev => !prev)
+  }
+
   // * hooks
   const [user, setUser] = useState('')
   const [password, setPassword] = useState('')
@@ -78,6 +85,9 @@ export default function Login() {
   useEffect(() => {
     setErrorMessage('')
   }, [user, password])
+  useEffect(() => {
+    localStorage.setItem('persist', persist)
+  }, [persist])
 
   // * Component
   return (
@@ -138,10 +148,15 @@ export default function Login() {
               onChange={(e) => setPassword(e.target.value)}
               autoComplete='current-password'
             />
-            {/* <FormControlLabel
-              control={<Checkbox value='remember' color='primary' onClick={() => setRememberMe(!rememberMe)} />}
-              label='Remember me'
-            />*/}
+            <FormControlLabel
+              control={<Checkbox
+                id='persist'
+                value='persist'
+                color='primary'
+                onChange={togglePersist}
+                       />}
+              label='Trust this device'
+            />
             <Button onClick={handleSubmit} fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
               Login In
             </Button>

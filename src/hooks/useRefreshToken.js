@@ -5,13 +5,10 @@ const useRefreshToken = () => {
   const { setAuth, auth } = useAuth()
 
   const refresh = async () => {
-    const response = await axios.post('api/v1/auth/refresh-token', {
-      userName: auth?.userName
-    }, { withCredentials: true })
+    const response = await axios.post('api/v1/auth/refresh-token', {}, { withCredentials: true })
     setAuth(prev => {
       return {
-        ...prev, accessToken: response.data.accessToken,
-        roles: response.data.roles
+        ...prev, accessToken: response.data.accessToken
       }
     })
     return response.data.accessToken
