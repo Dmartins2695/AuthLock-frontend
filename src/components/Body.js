@@ -1,5 +1,5 @@
 import React from 'react'
-import classes from '../AppLayout.module.sass'
+import classes from '../layouts/AppLayout/AppLayout.module.sass'
 import StarOutlineIcon from '@mui/icons-material/StarOutline'
 import { Typography } from '@mui/material'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
@@ -7,11 +7,11 @@ import ShieldIcon from '@mui/icons-material/Shield'
 import StarIcon from '@mui/icons-material/Star'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 
-import useAuth from '../../../hooks/useAuth'
-import useRefreshToken from '../../../hooks/useRefreshToken'
-import useAxiosPrivate from '../../../hooks/useAxiosPrivate'
+import useAuth from '../hooks/useAuth'
+import useRefreshToken from '../hooks/useRefreshToken'
+import useAxiosPrivate from '../hooks/useAxiosPrivate'
 import { useLocation, useNavigate } from 'react-router-dom'
-import useLogout from '../../../hooks/useLogout'
+import useLogout from '../hooks/useLogout'
 
 export const Body = () => {
   // ? EXAMPLE OF HOW TO USER HTTP REQUESTS
@@ -40,12 +40,10 @@ export const Body = () => {
   }
 
   const signOut = async () => {
-    localStorage.clear()
-    await logout()
-    navigate('/auth/login')
+    await logout().then((response) => {
+      navigate('/auth/login')
+    })
   }
-
-  console.log(auth?.accessToken)
 
   return (
     <div className={classes.bodyDataArea}>
@@ -55,7 +53,7 @@ export const Body = () => {
       <button onClick={() => refresh()}>
         refresh
       </button>
-      <button onClick={() => signOut}>
+      <button onClick={signOut}>
         logout
       </button>
       <div className={classes.bodyDataTable}>

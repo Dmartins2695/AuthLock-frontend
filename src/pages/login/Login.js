@@ -15,7 +15,6 @@ import { Alert, Checkbox, FormControlLabel } from '@mui/material'
 import '../../utils/constants'
 import { POST } from '../../utils/constants'
 import useAuth from '../../hooks/useAuth'
-import { decrypt } from '../../utils/AESUtils'
 
 function Copyright(props) {
   return (
@@ -39,8 +38,7 @@ export default function Login() {
   // * functions
   const handleResponse = (response) => {
     const accessToken = response?.data?.accessToken
-    console.log(accessToken)
-    console.log(decrypt('secret', accessToken))
+
     if (accessToken) {
       setAuth({ userName: user, accessToken: accessToken })
       navigate(from, { replace: true })
@@ -49,7 +47,7 @@ export default function Login() {
     }
   }
   const handleError = (error) => {
-    console.log(error)
+    console.error(error)
     if (!error?.response) {
       setErrorMessage('No Server Response')
     } else if (error.response?.status === 401) {
@@ -122,7 +120,7 @@ export default function Login() {
           <Typography component='h1' variant='h5'>
             Login in
           </Typography>
-          <Box sx={{ mt: 1 }}>
+          <Box component='form' onSubmit={handleSubmit} sx={{ mt: 1 }}>
             {errorMessage !== '' && <Alert severity='error'>{errorMessage}</Alert>}
             <TextField
               margin='normal'
@@ -157,7 +155,7 @@ export default function Login() {
                        />}
               label='Trust this device'
             />
-            <Button onClick={handleSubmit} fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
+            <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
               Login In
             </Button>
             <Grid container>
