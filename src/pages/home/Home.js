@@ -1,7 +1,7 @@
 import classes from './Home.module.sass'
 import { Header } from '../../layouts/AppLayout/components/Header'
-import { Body } from '../../layouts/AppLayout/components/Body'
-import { Buttons } from '../../layouts/AppLayout/components/Buttons'
+import { Body } from '../../components/Body'
+import { Buttons } from '../../components/Buttons'
 import React from 'react'
 
 export const Home = (props) => {

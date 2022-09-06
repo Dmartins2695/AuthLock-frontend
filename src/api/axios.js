@@ -1,14 +1,16 @@
 import axios from 'axios'
 
-const BASE_URL = 'http://localhost:8080'
+const validateUrl = (url) => {
+  return url
+}
 
 
 export default axios.create({
-  baseURL: BASE_URL
+  baseURL: validateUrl(process.env.REACT_APP_BASE_URL)
 })
 
 export const axiosPrivate = axios.create({
-  baseURL: BASE_URL,
+  baseURL: validateUrl(process.env.REACT_APP_BASE_URL),
   headers: { 'Content-Type': 'application/json' },
   withCredentials: true
 })

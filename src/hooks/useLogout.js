@@ -1,15 +1,19 @@
-import axios from '../api/axios'
 import useAuth from './useAuth'
+import useAxiosPrivate from './useAxiosPrivate'
 
 const useLogout = () => {
-  const { setAuth } = useAuth()
+  const { auth, setAuth } = useAuth()
+  const axios = useAxiosPrivate()
 
   const logout = async () => {
-    setAuth({})
     try {
-      const response = await axios('/auth/logout', {
-        withCredentials: true
+      await axios.post('/api/v1/auth/logout').then((response) => {
+        if (response.status === 200 || response.status === 204) {
+          setAuth({})
+          localStorage.removeItem('persist')
+        }
       })
+
     } catch (err) {
       console.error(err)
     }
