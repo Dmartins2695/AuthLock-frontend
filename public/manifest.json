@@ -1,6 +1,6 @@
 {
-  "short_name": "PassW",
-  "name": "PassW App",
+  "short_name": "AuthLock",
+  "name": "AuthLock App",
   "icons": [
     {
       "src": "img.png",

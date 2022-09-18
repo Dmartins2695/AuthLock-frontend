@@ -10,18 +10,19 @@ import Grid from '@mui/material/Grid'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import Typography from '@mui/material/Typography'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { makeRequestLogin } from '../../utils/httpRequest/httpRequest'
 import { Alert, Checkbox, FormControlLabel } from '@mui/material'
 import '../../utils/constants'
-import { POST } from '../../utils/constants'
 import useAuth from '../../hooks/useAuth'
+import { useDispatch } from 'react-redux'
+import { useLoginMutation } from '../../features/auth/authApiSlice'
+import { setCredentials } from '../../features/auth/authSlice'
 
 function Copyright(props) {
   return (
     <Typography variant='body2' color='text.secondary' align='center' {...props}>
       {'Copyright © '}
-      <Link color='inherit' href='https://WasW.netlify/'>
-        WasW
+      <Link color='inherit' href='https://authlock.netlify/'>
+        AuthLock
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -34,55 +35,35 @@ export default function Login() {
   const { setAuth, persist, setPersist } = useAuth()
   let navigate = useNavigate()
   const location = useLocation()
+  const [login, { isLoading }] = useLoginMutation()
+  const dispatch = useDispatch()
   const from = location.state?.from?.pathname || '/dashboard'
   // * functions
-  const handleResponse = (response) => {
-    const accessToken = response?.data?.accessToken
-
-    if (accessToken) {
-      setAuth({ userName: user, accessToken: accessToken })
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+    try {
+      const userData = await login({ userName, password }).unwrap()
+      dispatch(setCredentials({ ...userData, userName }))
+      setUserName('')
+      setPassword('')
       navigate(from, { replace: true })
-    } else {
-      setErrorMessage('Missing Access Token')
-    }
-  }
-  const handleError = (error) => {
-    console.error(error)
-    if (!error?.response) {
-      setErrorMessage('No Server Response')
-    } else if (error.response?.status === 401) {
-      setErrorMessage('Unauthorized Request. Fill form with valid credentials')
-    } else {
+    } catch (e) {
       setErrorMessage('Login Failed')
     }
-  }
-  const handleSubmit = (event) => {
-    event.preventDefault()
-    const data = {
-      userName: user,
-      password: password
-    }
 
-    makeRequestLogin({
-      method: POST,
-      data: data,
-      url: '/auth/login',
-      callbackResponse: handleResponse,
-      callbackError: handleError
-    })
   }
   const togglePersist = () => {
     setPersist(prev => !prev)
   }
 
   // * hooks
-  const [user, setUser] = useState('')
+  const [userName, setUserName] = useState('')
   const [password, setPassword] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
   // * useEffects
   useEffect(() => {
     setErrorMessage('')
-  }, [user, password])
+  }, [userName, password])
   useEffect(() => {
     localStorage.setItem('persist', persist)
   }, [persist])
@@ -129,8 +110,8 @@ export default function Login() {
               id='email'
               label='Email Address'
               name='email'
-              value={user}
-              onChange={(e) => setUser(e.target.value)}
+              value={userName}
+              onChange={(e) => setUserName(e.target.value)}
               autoComplete='email'
               autoFocus
             />
@@ -160,12 +141,12 @@ export default function Login() {
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link href='/auth/recover-password' variant='body2'>
+                <Link href={'/auth/recover-password'} variant='body2'>
                   Forgot password?
                 </Link>
               </Grid>
               <Grid item>
-                <Link href='/auth/register' variant='body2'>
+                <Link href={'/auth/register'} variant='body2'>
                   {'Don\'t have an account? Sign Up'}
                 </Link>
               </Grid>
