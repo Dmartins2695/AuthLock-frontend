@@ -6,51 +6,54 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import ShieldIcon from '@mui/icons-material/Shield'
 import StarIcon from '@mui/icons-material/Star'
 import VisibilityIcon from '@mui/icons-material/Visibility'
-
-import useAuth from '../hooks/useAuth'
-import useRefreshToken from '../hooks/useRefreshToken'
-import useAxiosPrivate from '../hooks/useAxiosPrivate'
-import { useLocation, useNavigate } from 'react-router-dom'
-import useLogout from '../hooks/useLogout'
+import { useNavigate } from 'react-router-dom'
+import { useLogoutMutation, useRefreshMutation } from '../features/auth/authApiSlice'
+import { useDispatch } from 'react-redux'
+import { logOut } from '../features/auth/authSlice'
+import { useGetPasswordsMutation } from '../features/password/passwordApiSlice'
 
 export const Body = () => {
   // ? EXAMPLE OF HOW TO USER HTTP REQUESTS
-  const { auth } = useAuth()
-  const refresh = useRefreshToken()
-  const axios = useAxiosPrivate()
+  const [refresh] = useRefreshMutation()
+  const [logout] = useLogoutMutation()
+  const [getPasswords] = useGetPasswordsMutation()
   const navigate = useNavigate()
-  const location = useLocation()
-  const logout = useLogout()
+  const dispatch = useDispatch()
 
-  const getPasswords = async () => {
-    await axios.get(
-      '/api/v1/user/stored-passwords/2'
-    ).then(
-      (response) => {
+  const getPasswordsFunc = async () => {
+    await getPasswords().then((response) => {
+      if (response.error) {
+        console.error(response.error)
+      } else {
         console.log(response)
       }
-    ).catch(
-      (error) => {
-        if (error.response.status === 403) {
-          navigate('/auth/login', { state: { from: location }, replace: true })
-        }
-      }
-    )
-
+    })
   }
 
   const signOut = async () => {
     await logout().then((response) => {
-      navigate('/auth/login')
+      if (response.error) {
+        console.error(response.error)
+      } else {
+        dispatch(logOut())
+        localStorage.removeItem('persist')
+        navigate('/auth/login')
+      }
+    })
+  }
+
+  const handleRefresh = async () => {
+    await refresh().then((response) => {
+      console.log(response)
     })
   }
 
   return (
     <div className={classes.bodyDataArea}>
-      <button onClick={getPasswords}>
+      <button onClick={getPasswordsFunc}>
         get passwords
       </button>
-      <button onClick={() => refresh()}>
+      <button onClick={handleRefresh}>
         refresh
       </button>
       <button onClick={signOut}>

@@ -6,6 +6,7 @@ import { Body } from './components/Body'
 import AuthLayout from './layouts/AuthLayout/AuthLayout'
 import ErrorLayout from './layouts/ErrorLayout/ErrorLayout'
 import RequireAuth from './features/auth/RequiredAuth'
+import PersistLogin from './components/PersistLogin'
 
 const NotFound = () => {
   return <h1>NOT FOUND</h1>
@@ -27,14 +28,14 @@ function App() {
         <Route exact path='recover-password' element={<Login />} />
       </Route>
       {/* * Protected Routes*/}
-      {/*<Route element={<PersistLogin />}>*/}
-      <Route element={<RequireAuth allowedRoles={['password:read']} />}>
-        <Route path='/dashboard' element={<AppLayout />}>
-          <Route exact path='' element={<Body />} />
-          <Route exact path='favorites' element={<Body />} />
+      <Route element={<PersistLogin />}>
+        <Route element={<RequireAuth allowedRoles={['password:read']} />}>
+          <Route path='/dashboard' element={<AppLayout />}>
+            <Route exact path='' element={<Body />} />
+            <Route exact path='favorites' element={<Body />} />
+          </Route>
         </Route>
       </Route>
-      {/*</Route>*/}
       {/* * Error Routes*/}
       <Route path='/error' element={<ErrorLayout />}>
         <Route path='unauthorized' element={<Unauthorized />} />

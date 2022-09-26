@@ -12,10 +12,9 @@ import Typography from '@mui/material/Typography'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Alert, Checkbox, FormControlLabel } from '@mui/material'
 import '../../utils/constants'
-import useAuth from '../../hooks/useAuth'
 import { useDispatch } from 'react-redux'
 import { useLoginMutation } from '../../features/auth/authApiSlice'
-import { setCredentials } from '../../features/auth/authSlice'
+import { setCredentials, togglePersist } from '../../features/auth/authSlice'
 
 function Copyright(props) {
   return (
@@ -32,7 +31,6 @@ function Copyright(props) {
 
 export default function Login() {
   // * variables
-  const { setAuth, persist, setPersist } = useAuth()
   let navigate = useNavigate()
   const location = useLocation()
   const [login, { isLoading }] = useLoginMutation()
@@ -52,8 +50,8 @@ export default function Login() {
     }
 
   }
-  const togglePersist = () => {
-    setPersist(prev => !prev)
+  const togglePersistLogin = () => {
+    dispatch(togglePersist())
   }
 
   // * hooks
@@ -64,9 +62,6 @@ export default function Login() {
   useEffect(() => {
     setErrorMessage('')
   }, [userName, password])
-  useEffect(() => {
-    localStorage.setItem('persist', persist)
-  }, [persist])
 
   // * Component
   return (
@@ -128,12 +123,7 @@ export default function Login() {
               autoComplete='current-password'
             />
             <FormControlLabel
-              control={<Checkbox
-                id='persist'
-                value='persist'
-                color='primary'
-                onChange={togglePersist}
-                       />}
+              control={<Checkbox id='persist' value='persist' color='primary' onChange={togglePersistLogin} />}
               label='Trust this device'
             />
             <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>

@@ -1,12 +1,14 @@
 import { Outlet } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import useRefreshToken from '../hooks/useRefreshToken'
-import useAuth from '../hooks/useAuth'
+import { useRefreshMutation } from '../features/auth/authApiSlice'
+import { selectCurrentPersist, selectCurrentToken } from '../features/auth/authSlice'
+import { useSelector } from 'react-redux'
 
 const PersistLogin = () => {
   const [isLoading, setIsLoading] = useState(true)
-  const refresh = useRefreshToken()
-  const { auth, persist } = useAuth()
+  const [refresh] = useRefreshMutation()
+  const token = useSelector(selectCurrentToken)
+  const persist = useSelector(selectCurrentPersist)
 
   useEffect(() => {
     let isMounted = true
@@ -19,7 +21,7 @@ const PersistLogin = () => {
         isMounted && setIsLoading(false)
       }
     }
-    !auth?.accessToken && persist ? verifyRefreshToken() : setIsLoading(false)
+    token && persist ? verifyRefreshToken() : setIsLoading(false)
 
     return () => isMounted = false
     // eslint-disable-next-line react-hooks/exhaustive-deps
