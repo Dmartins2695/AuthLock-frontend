@@ -3,7 +3,10 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const getPersistInitialState = () => {
   const localStorageVariable = localStorage.getItem('persist')
-  if (localStorageVariable !== 'false' || localStorageVariable !== 'true') return false
+  if (localStorageVariable.match(/^true$|^false$/gm) !== null) {
+    return localStorageVariable
+  }
+  return false
 }
 
 const authSlice = createSlice({
@@ -19,14 +22,19 @@ const authSlice = createSlice({
       state.user = null
       state.token = null
     },
-    togglePersist: (state) => {
-      localStorage.setItem('persist', String(!state.persist))
-      state.persist = !state.persist
+    setPersist: (state, action) => {
+      const { value } = action.payload
+      localStorage.setItem('persist', String(value))
+      state.persist = value
+    },
+    updateAccessToken: (state, action) => {
+      const { accessToken } = action.payload
+      state.token = accessToken
     }
   }
 })
 
-export const { setCredentials, logOut, togglePersist } = authSlice.actions
+export const { setCredentials, logOut, setPersist, updateAccessToken } = authSlice.actions
 
 export default authSlice.reducer
 

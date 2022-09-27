@@ -14,7 +14,7 @@ import { Alert, Checkbox, FormControlLabel } from '@mui/material'
 import '../../utils/constants'
 import { useDispatch } from 'react-redux'
 import { useLoginMutation } from '../../features/auth/authApiSlice'
-import { setCredentials, togglePersist } from '../../features/auth/authSlice'
+import { setCredentials, setPersist } from '../../features/auth/authSlice'
 
 function Copyright(props) {
   return (
@@ -50,8 +50,8 @@ export default function Login() {
     }
 
   }
-  const togglePersistLogin = () => {
-    dispatch(togglePersist())
+  const togglePersistLogin = (event) => {
+    dispatch(setPersist({ value: event.target.checked }))
   }
 
   // * hooks

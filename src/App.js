@@ -22,13 +22,14 @@ function App() {
     <Routes>
       <Route path='/' element={<Navigate replace to='/dashboard' />} />
       {/* * Public Routes*/}
-      <Route path='/auth' element={<AuthLayout />}>
-        <Route exact path='login' element={<Login />} />
-        <Route exact path='register' element={<Login />} />
-        <Route exact path='recover-password' element={<Login />} />
-      </Route>
-      {/* * Protected Routes*/}
       <Route element={<PersistLogin />}>
+        <Route path='/auth' element={<AuthLayout />}>
+          <Route exact path='login' element={<Login />} />
+          <Route exact path='register' element={<Login />} />
+          <Route exact path='recover-password' element={<Login />} />
+        </Route>
+        {/* * Protected Routes*/}
+
         <Route element={<RequireAuth allowedRoles={['password:read']} />}>
           <Route path='/dashboard' element={<AppLayout />}>
             <Route exact path='' element={<Body />} />
