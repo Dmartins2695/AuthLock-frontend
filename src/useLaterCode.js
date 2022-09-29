@@ -148,3 +148,38 @@ const validations = (password, email) => {
   }
   return valid
 }
+
+// ? EXAMPLE OF HOW TO USER HTTP REQUESTS
+/*const [refresh] = useRefreshMutation()
+const [logout] = useLogoutMutation()
+const [getPasswords] = useGetPasswordsMutation()
+const navigate = useNavigate()
+const dispatch = useDispatch()
+
+const getPasswordsFunc = async () => {
+  await getPasswords().then((response) => {
+    if (response.error) {
+      console.error(response.error)
+    } else {
+      console.log(response)
+    }
+  })
+}
+
+const signOut = async () => {
+  await logout().then((response) => {
+    if (response.error) {
+      console.error(response.error)
+    } else {
+      dispatch(logOut())
+      localStorage.removeItem('persist')
+      navigate('/auth/login')
+    }
+  })
+}
+
+const handleRefresh = async () => {
+  await refresh().then((response) => {
+    console.log(response)
+  })
+}*/

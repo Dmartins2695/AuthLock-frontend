@@ -2,11 +2,11 @@ import React from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import Login from './pages/login/Login'
 import AppLayout from './layouts/AppLayout/AppLayout'
-import { Body } from './components/Body'
 import AuthLayout from './layouts/AuthLayout/AuthLayout'
 import ErrorLayout from './layouts/ErrorLayout/ErrorLayout'
 import RequireAuth from './features/auth/RequiredAuth'
 import PersistLogin from './components/PersistLogin'
+import { Home } from './pages/home/Home'
 
 const NotFound = () => {
   return <h1>NOT FOUND</h1>
@@ -32,8 +32,8 @@ function App() {
 
         <Route element={<RequireAuth allowedRoles={['password:read']} />}>
           <Route path='/dashboard' element={<AppLayout />}>
-            <Route exact path='' element={<Body />} />
-            <Route exact path='favorites' element={<Body />} />
+            <Route exact path='' element={<Home />} />
+            <Route exact path='favorites' element={<Home />} />
           </Route>
         </Route>
       </Route>

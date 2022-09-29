@@ -1,0 +1,14 @@
+@mixin displayFlex($direction,$justify: center, $alignC:center, $alignI: center)
+  display: flex
+  flex-direction: $direction
+  justify-content: $justify
+  align-content: $alignC
+  align-items: $alignI
+  flex: 1
+
+
+@mixin centerChildren
+  display: flex
+  justify-content: center
+  align-content: center
+  align-items: center

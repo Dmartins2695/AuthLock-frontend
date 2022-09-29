@@ -1,0 +1,50 @@
+@import '../../../sass/_mixins'
+@import '../../../sass/_variables'
+
+.addPasswordButton
+  color: #2F5D79FF
+  @include displayFlex(row)
+  padding: 0.5em
+  transition: all 150ms ease-in
+
+  &:hover
+    color: #75B2CCFF
+    cursor: pointer
+
+.bodyDataArea
+  height: 100%
+
+.bodyDataTable
+
+.bodyDataItem
+  display: grid
+  grid-auto-columns: 1fr
+  grid-template-columns: 0.3fr 1.6fr 1.6fr 1.2fr 0.3fr
+  grid-template-rows: 1fr
+  gap: 0 0
+  grid-template-areas: 'favorite website password createdAt weak'
+
+.bodyDataItemFavorite
+  grid-area: favorite
+  @include centerChildren
+  padding: 0.5em 0 0.5em 0
+
+.bodyDataItemWebsite
+  grid-area: website
+  @include centerChildren
+  padding: 0.5em 0 0.5em 0
+
+.bodyDataItePassword
+  grid-area: password
+  @include centerChildren
+  padding: 0.5em 0 0.5em 0
+
+.bodyDataItemCreatedAt
+  grid-area: createdAt
+  @include centerChildren
+  padding: 0.5em 0 0.5em 0
+
+.bodyDataItemWeak
+  grid-area: weak
+  @include centerChildren
+  padding: 0.5em 0 0.5em 0

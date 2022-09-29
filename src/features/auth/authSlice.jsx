@@ -1,9 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
+import jwtDecode from 'jwt-decode'
 
 
 const getPersistInitialState = () => {
   const localStorageVariable = localStorage.getItem('persist')
-  if (localStorageVariable.match(/^true$|^false$/gm) !== null) {
+  if (localStorageVariable?.match(/^true$|^false$/gm)) {
     return localStorageVariable
   }
   return false
@@ -11,10 +12,11 @@ const getPersistInitialState = () => {
 
 const authSlice = createSlice({
   name: 'auth',
-  initialState: { user: null, token: null, persist: getPersistInitialState() },
+  initialState: { user: null, userId: null, token: null, persist: getPersistInitialState() },
   reducers: {
     setCredentials: (state, action) => {
       const { userName, accessToken } = action.payload
+      state.userId = jwtDecode(accessToken).id
       state.user = userName
       state.token = accessToken
     },
@@ -40,4 +42,5 @@ export default authSlice.reducer
 
 export const selectCurrentUser = (state) => state?.auth?.user
 export const selectCurrentToken = (state) => state?.auth?.token
+export const selectCurrentUserId = (state) => state?.auth?.userId
 export const selectCurrentPersist = (state) => state?.auth?.persist
