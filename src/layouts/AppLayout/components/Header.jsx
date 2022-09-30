@@ -8,6 +8,7 @@ import { useGetPasswordsMutation } from '../../../features/password/passwordApiS
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { logOut } from '../../../features/auth/authSlice'
+import { i18n } from '../../../features/i18n/i18n'
 
 export const Header = () => {
   const [logout] = useLogoutMutation()
@@ -33,7 +34,7 @@ export const Header = () => {
           <div className={classes.headerRowInnerWrapper}>
             <img className={classes.headerLogo} src={Logo} alt='logo' />
             <div className={classes.logoutButton}>
-              <Button variant='contained' onClick={signOut}>Logout</Button>
+              <Button variant='contained' onClick={signOut}>{i18n('logout')}</Button>
             </div>
           </div>
         </div>

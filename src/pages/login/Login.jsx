@@ -16,6 +16,7 @@ import { useDispatch } from 'react-redux'
 import { useLoginMutation } from '../../features/auth/authApiSlice'
 import { setCredentials, setPersist } from '../../features/auth/authSlice'
 import { Copyright } from '../components/Copyrights'
+import { i18n } from '../../features/i18n/i18n'
 
 export default function Login() {
   // * variables
@@ -82,7 +83,7 @@ export default function Login() {
             <AccountCircleIcon />
           </Avatar>
           <Typography component='h1' variant='h5'>
-            Login in
+            {i18n('login')}
           </Typography>
           <Box component='form' onSubmit={handleSubmit} sx={{ mt: 1 }}>
             {errorMessage !== '' && <Alert severity='error'>{errorMessage}</Alert>}
@@ -115,17 +116,17 @@ export default function Login() {
               label='Trust this device'
             />
             <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
-              Login In
+              {i18n('login')}
             </Button>
             <Grid container>
               <Grid item xs>
                 <Link href={'/auth/recover-password'} variant='body2'>
-                  Forgot password?
+                  {i18n('forgot_password')}
                 </Link>
               </Grid>
               <Grid item>
                 <Link href={'/auth/register'} variant='body2'>
-                  {'Don\'t have an account? Sign Up'}
+                  {i18n('sing_up')}
                 </Link>
               </Grid>
             </Grid>

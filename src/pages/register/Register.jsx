@@ -12,6 +12,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useRegisterMutation } from '../../features/auth/authApiSlice'
 import { Copyright } from '../components/Copyrights'
+import { i18n } from '../../features/i18n/i18n'
 
 const Register = () => {
   // * variables
@@ -79,7 +80,7 @@ const Register = () => {
             <AccountCircleIcon />
           </Avatar>
           <Typography component='h1' variant='h5'>
-            Login in
+            {i18n('register')}
           </Typography>
           <Box component='form' onSubmit={handleSubmit} sx={{ mt: 1 }}>
             {systemMessage !== '' && <Alert severity='error'>{systemMessage}</Alert>}
@@ -144,7 +145,7 @@ const Register = () => {
               autoComplete='passwordConfirm'
             />
             <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
-              Register
+              {i18n('register')}
             </Button>
           </Box>
         </Box>
