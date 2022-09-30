@@ -5,8 +5,10 @@ import AppLayout from './layouts/AppLayout/AppLayout'
 import AuthLayout from './layouts/AuthLayout/AuthLayout'
 import ErrorLayout from './layouts/ErrorLayout/ErrorLayout'
 import RequireAuth from './features/auth/RequiredAuth'
-import PersistLogin from './components/PersistLogin'
+import PersistLogin from './pages/components/PersistLogin'
 import { Home } from './pages/home/Home'
+import Register from './pages/register/Register'
+import ConfirmRegistration from './pages/confirmRegistrarion/ConfirmRegistration'
 
 const NotFound = () => {
   return <h1>NOT FOUND</h1>
@@ -20,12 +22,14 @@ const Unauthorized = () => {
 function App() {
   return (
     <Routes>
+
       <Route path='/' element={<Navigate replace to='/dashboard' />} />
+      <Route exact path='registration/confirm/:token' element={<ConfirmRegistration />} />
       {/* * Public Routes*/}
       <Route element={<PersistLogin />}>
         <Route path='/auth' element={<AuthLayout />}>
           <Route exact path='login' element={<Login />} />
-          <Route exact path='register' element={<Login />} />
+          <Route exact path='register' element={<Register />} />
           <Route exact path='recover-password' element={<Login />} />
         </Route>
         {/* * Protected Routes*/}

@@ -1,57 +1,54 @@
-import React, { useEffect, useState } from 'react'
-import Avatar from '@mui/material/Avatar'
-import Button from '@mui/material/Button'
 import CssBaseline from '@mui/material/CssBaseline'
-import TextField from '@mui/material/TextField'
-import Link from '@mui/material/Link'
+import Grid from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
 import Box from '@mui/material/Box'
-import Grid from '@mui/material/Grid'
+import Avatar from '@mui/material/Avatar'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import Typography from '@mui/material/Typography'
-import { useLocation, useNavigate } from 'react-router-dom'
-import { Alert, Checkbox, FormControlLabel } from '@mui/material'
-import '../../utils/constants'
-import { useDispatch } from 'react-redux'
-import { useLoginMutation } from '../../features/auth/authApiSlice'
-import { setCredentials, setPersist } from '../../features/auth/authSlice'
+import { Alert } from '@mui/material'
+import TextField from '@mui/material/TextField'
+import Button from '@mui/material/Button'
+import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useRegisterMutation } from '../../features/auth/authApiSlice'
 import { Copyright } from '../components/Copyrights'
 
-export default function Login() {
+const Register = () => {
   // * variables
   let navigate = useNavigate()
-  const location = useLocation()
-  const [login, { isLoading }] = useLoginMutation()
-  const dispatch = useDispatch()
-  const from = location.state?.from?.pathname || '/dashboard'
+  const [register, { isLoading }] = useRegisterMutation()
+  const from = '/auth/login'
+
   // * functions
   const handleSubmit = async (event) => {
     event.preventDefault()
+
     try {
-      const userData = await login({ userName, password }).unwrap()
-      dispatch(setCredentials({ ...userData, userName }))
+      await register({ email: userName, password, firstName, lastName })
       setUserName('')
-      setPassword('')
+      setFirstName('')
+      setLastName('')
+      setPasswordConfirm('')
       navigate(from, { replace: true })
     } catch (e) {
-      setErrorMessage('Login Failed')
+      setSystemMessage('Register Failed')
     }
 
-  }
-  const togglePersistLogin = (event) => {
-    dispatch(setPersist({ value: event.target.checked }))
   }
 
   // * hooks
   const [userName, setUserName] = useState('')
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
   const [password, setPassword] = useState('')
-  const [errorMessage, setErrorMessage] = useState('')
+  const [passwordConfirm, setPasswordConfirm] = useState('')
+  const [systemMessage, setSystemMessage] = useState('')
+
   // * useEffects
   useEffect(() => {
-    setErrorMessage('')
-  }, [userName, password])
+    setSystemMessage('')
+  }, [userName, password, lastName, firstName])
 
-  // * Component
   return (
     <Grid container component='main' sx={{ height: '100vh' }}>
       <CssBaseline />
@@ -85,7 +82,31 @@ export default function Login() {
             Login in
           </Typography>
           <Box component='form' onSubmit={handleSubmit} sx={{ mt: 1 }}>
-            {errorMessage !== '' && <Alert severity='error'>{errorMessage}</Alert>}
+            {systemMessage !== '' && <Alert severity='error'>{systemMessage}</Alert>}
+            <TextField
+              margin='normal'
+              required
+              fullWidth
+              id='fistName'
+              label='First Name'
+              name='fistName'
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              autoComplete='firstName'
+              autoFocus
+            />
+            <TextField
+              margin='normal'
+              required
+              fullWidth
+              id='lastName'
+              label='Last Name'
+              name='lastName'
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              autoComplete='LastName'
+              autoFocus
+            />
             <TextField
               margin='normal'
               required
@@ -110,25 +131,21 @@ export default function Login() {
               onChange={(e) => setPassword(e.target.value)}
               autoComplete='current-password'
             />
-            <FormControlLabel
-              control={<Checkbox id='persist' value='persist' color='primary' onChange={togglePersistLogin} />}
-              label='Trust this device'
+            <TextField
+              margin='normal'
+              required
+              fullWidth
+              name='passwordConfirm'
+              label='Confirm Password'
+              type='password'
+              id='passwordConfirm'
+              value={passwordConfirm}
+              onChange={(e) => setPasswordConfirm(e.target.value)}
+              autoComplete='passwordConfirm'
             />
             <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
-              Login In
+              Register
             </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href={'/auth/recover-password'} variant='body2'>
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href={'/auth/register'} variant='body2'>
-                  {'Don\'t have an account? Sign Up'}
-                </Link>
-              </Grid>
-            </Grid>
           </Box>
         </Box>
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-end', height: '10rem' }}>
@@ -138,3 +155,5 @@ export default function Login() {
     </Grid>
   )
 }
+
+export default Register

@@ -1,5 +1,5 @@
 import React from 'react'
-import classes from '../layouts/AppLayout/AppLayout.module.sass'
+import classes from '../../layouts/AppLayout/AppLayout.module.sass'
 import AddIcon from '@mui/icons-material/Add'
 import { Typography } from '@mui/material'
 
