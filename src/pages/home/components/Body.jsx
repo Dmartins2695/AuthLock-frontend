@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import classes from './Body.module.sass'
 import StarOutlineIcon from '@mui/icons-material/StarOutline'
 import { Typography } from '@mui/material'
@@ -7,8 +7,31 @@ import ShieldIcon from '@mui/icons-material/Shield'
 import StarIcon from '@mui/icons-material/Star'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import Grid from '@mui/material/Grid'
+import { useGetPasswordsMutation } from '../../../features/password/passwordApiSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { selectCurrentUserId } from '../../../features/auth/authSlice'
+import { selectCurrentPasswords, setPasswords } from '../../../features/password/passwordSlice'
 
 const RenderItem = () => {
+  const [getPassword] = useGetPasswordsMutation()
+  const userId = useSelector(selectCurrentUserId)
+  const passwords = useSelector(selectCurrentPasswords)
+
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    const callGetPasswords = async () => {
+      return getPassword(userId)
+    }
+    callGetPasswords().then((response) => {
+      if (response.error) {
+        console.error(response.error)
+      } else {
+        dispatch(setPasswords({ passwords: response.data }))
+      }
+    })
+  }, [])
+
   return (
     <Grid className={classes.bodyDataItem} sx={{ background: 'rgba(232, 244, 255, 0.6)' }}>
       <Grid className={classes.bodyDataItemFavorite}>

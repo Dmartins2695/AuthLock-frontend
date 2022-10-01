@@ -3,8 +3,8 @@ import { apiSlice } from '../../app/api/apiSlice'
 export const passwordsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getPasswords: builder.mutation({
-      query: () => ({
-        url: '/api/v1/user/stored-passwords/2',
+      query: (userId) => ({
+        url: `/user/stored-passwords/${userId}`,
         method: 'GET'
       })
     })

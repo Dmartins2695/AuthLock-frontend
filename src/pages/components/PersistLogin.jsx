@@ -1,8 +1,9 @@
 import { Outlet } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { useRefreshMutation } from '../../features/auth/authApiSlice'
-import { selectCurrentPersist, updateAccessToken } from '../../features/auth/authSlice'
+import { selectCurrentPersist, setCredentials, updateAccessToken } from '../../features/auth/authSlice'
 import { useDispatch, useSelector } from 'react-redux'
+import jwtDecode from 'jwt-decode'
 
 const PersistLogin = () => {
   const [isLoading, setIsLoading] = useState(true)
@@ -15,8 +16,13 @@ const PersistLogin = () => {
     const verifyRefreshToken = async () => {
       try {
         await refresh().then((response) => {
-          if (response.error) console.error(response.error)
-          else dispatch(updateAccessToken({ ...response.data }))
+          if (response.error) {
+            console.error(response.error)
+          } else {
+            const data = jwtDecode(response.data?.accessToken)
+            dispatch(updateAccessToken({ ...response.data }))
+            dispatch(setCredentials({ ...response.data, userName: data.sub }))
+          }
         })
       } catch (err) {
         console.error(err)
