@@ -1,18 +1,61 @@
 import React, { useEffect } from 'react'
 import classes from './Body.module.sass'
 import StarOutlineIcon from '@mui/icons-material/StarOutline'
-import { Typography } from '@mui/material'
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
-import ShieldIcon from '@mui/icons-material/Shield'
 import StarIcon from '@mui/icons-material/Star'
-import VisibilityIcon from '@mui/icons-material/Visibility'
+import { Typography } from '@mui/material'
+import ShieldIcon from '@mui/icons-material/Shield'
 import Grid from '@mui/material/Grid'
 import { useGetPasswordsMutation } from '../../../features/password/passwordApiSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectCurrentUserId } from '../../../features/auth/authSlice'
 import { selectCurrentPasswords, setPasswords } from '../../../features/password/passwordSlice'
+import { i18n } from '../../../features/i18n/i18n'
 
-const RenderItem = () => {
+const RenderColumnsTitles = () => {
+  return (
+    <Grid className={classes.bodyDataItem} sx={{ background: 'rgba(232, 244, 255, 0.6)', borderBottom: '1px solid #b7b7b7' }}>
+      <Grid className={classes.bodyDataItemFavorite}>
+        <Typography>{i18n('table_title_favorite')}</Typography>
+      </Grid>
+      <Grid className={classes.bodyDataItemWebsite}>
+        <Typography>{i18n('table_title_website')}</Typography>
+      </Grid>
+      <Grid className={classes.bodyDataItePassword}>
+        <Typography>{i18n('table_title_password')}</Typography>
+      </Grid>
+      <Grid className={classes.bodyDataItemCreatedAt}>
+        <Typography>{i18n('table_title_date_of_creation')}</Typography>
+      </Grid>
+      <Grid className={classes.bodyDataItemWeak}>
+        <Typography>{i18n('table_title_strength')}</Typography>
+      </Grid>
+    </Grid>
+  )
+}
+
+const RenderItem = ({ item, index }) => {
+  const style = index % 2 !== 0 ? { background: 'rgba(232, 244, 255, 0.6)' } : {}
+  return (
+    <Grid className={classes.bodyDataItem} sx={style}>
+      <Grid className={classes.bodyDataItemFavorite}>{item?.favorite ? <StarIcon /> : <StarOutlineIcon />}</Grid>
+      <Grid className={classes.bodyDataItemWebsite}>
+        <Typography>{item?.websiteUrl}</Typography>
+      </Grid>
+      <Grid className={classes.bodyDataItePassword}>
+        <Typography>{item?.value}</Typography>
+        {/*<VisibilityOffIcon />*/}
+      </Grid>
+      <Grid className={classes.bodyDataItemCreatedAt}>
+        <Typography>{item?.lastUpdateDays ? item?.lastUpdateDays : '?'} days ago</Typography>
+      </Grid>
+      <Grid className={classes.bodyDataItemWeak}>
+        {item?.weak ? <ShieldIcon style={{ color: 'red' }} /> : <ShieldIcon style={{ color: 'green' }} />}
+      </Grid>
+    </Grid>
+  )
+}
+
+export const Body = () => {
   const [getPassword] = useGetPasswordsMutation()
   const userId = useSelector(selectCurrentUserId)
   const passwords = useSelector(selectCurrentPasswords)
@@ -33,50 +76,12 @@ const RenderItem = () => {
   }, [])
 
   return (
-    <Grid className={classes.bodyDataItem} sx={{ background: 'rgba(232, 244, 255, 0.6)' }}>
-      <Grid className={classes.bodyDataItemFavorite}>
-        <StarOutlineIcon />
-      </Grid>
-      <Grid className={classes.bodyDataItemWebsite}>
-        <Typography>www.facebook.com</Typography>
-      </Grid>
-      <Grid className={classes.bodyDataItePassword}>
-        <Typography>**********</Typography>
-        <VisibilityOffIcon />
-      </Grid>
-      <Grid className={classes.bodyDataItemCreatedAt}>
-        <Typography>1 day ago</Typography>
-      </Grid>
-      <Grid className={classes.bodyDataItemWeak}>
-        <ShieldIcon style={{ color: 'red' }} />
-      </Grid>
-    </Grid>
-  )
-}
-
-export const Body = () => {
-  return (
     <Grid className={classes.bodyDataArea}>
       <Grid className={classes.bodyDataTable}>
-        <RenderItem />
-        <Grid className={classes.bodyDataItem}>
-          <Grid className={classes.bodyDataItemFavorite}>
-            <StarIcon />
-          </Grid>
-          <Grid className={classes.bodyDataItemWebsite}>
-            <Typography>www.facebook.com</Typography>
-          </Grid>
-          <Grid className={classes.bodyDataItePassword}>
-            <Typography>**********</Typography>
-            <VisibilityIcon />
-          </Grid>
-          <Grid className={classes.bodyDataItemCreatedAt}>
-            <Typography>1 day ago</Typography>
-          </Grid>
-          <Grid className={classes.bodyDataItemWeak}>
-            <ShieldIcon style={{ color: 'red' }} />
-          </Grid>
-        </Grid>
+        <RenderColumnsTitles />
+        {passwords.map((password, index) => {
+          return <RenderItem key={index} index={index} item={password} />
+        })}
       </Grid>
     </Grid>
   )

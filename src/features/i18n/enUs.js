@@ -10,6 +10,11 @@ export const enUS = {
   logout: 'Logout',
   total: 'Total',
   outdated: 'Outdated',
-  duplicated: 'duplicated',
-  weak: 'weak'
+  duplicated: 'Duplicated',
+  weak: 'Weak',
+  table_title_favorite: 'Favorite',
+  table_title_website: 'Website',
+  table_title_password: 'Password',
+  table_title_date_of_creation: 'Date of Creation',
+  table_title_strength: 'Strength'
 }
