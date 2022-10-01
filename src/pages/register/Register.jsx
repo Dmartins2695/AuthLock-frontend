@@ -34,7 +34,6 @@ const Register = () => {
     } catch (e) {
       setSystemMessage('Register Failed')
     }
-
   }
 
   // * hooks

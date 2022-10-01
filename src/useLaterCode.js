@@ -116,12 +116,7 @@ const SearchInput = (props) => {
       <SearchIconWrapper>
         <SearchIcon />
       </SearchIconWrapper>
-      <StyledInputBase
-        placeholder='Search…'
-        inputProps={{ 'aria-label': 'search' }}
-        onChange={(e) => setQuery(e.target.value)}
-        value={query}
-      />
+      <StyledInputBase placeholder='Search…' inputProps={{ 'aria-label': 'search' }} onChange={(e) => setQuery(e.target.value)} value={query} />
     </Search>
   )
 }

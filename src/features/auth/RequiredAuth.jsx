@@ -10,12 +10,12 @@ const RequireAuth = ({ allowedRoles }) => {
   const jwtToken = token ? jwtDecode(token) : undefined
   const roles = jwtToken?.roles || []
 
-  return (
-    roles?.find(role => allowedRoles?.includes(role))
-      ? <Outlet />
-      : userName
-        ? <Navigate to='/error/unauthorized' state={{ from: location }} replace />
-        : <Navigate to='/auth/login' state={{ from: location }} replace />
+  return roles?.find((role) => allowedRoles?.includes(role)) ? (
+    <Outlet />
+  ) : userName ? (
+    <Navigate to='/error/unauthorized' state={{ from: location }} replace />
+  ) : (
+    <Navigate to='/auth/login' state={{ from: location }} replace />
   )
 }
 export default RequireAuth

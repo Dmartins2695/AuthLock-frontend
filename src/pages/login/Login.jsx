@@ -37,7 +37,6 @@ export default function Login() {
     } catch (e) {
       setErrorMessage('Login Failed')
     }
-
   }
   const togglePersistLogin = (event) => {
     dispatch(setPersist({ value: event.target.checked }))

@@ -11,9 +11,11 @@
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
-    "axios": "^0.27.2",
     "crypto-js": "^4.1.1",
     "eslint": "^8.22.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "prettier": "^2.7.1",
     "jwt-decode": "^3.1.2",
     "lodash": "^4.17.21",
     "react": "^18.2.0",
@@ -44,83 +46,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "eslintConfig": {
-    "parser": "@babel/eslint-parser",
-    "extends": [
-      "react-app",
-      "react-app/jest",
-      "eslint:recommended",
-      "plugin:react/recommended"
-    ],
-    "env": {
-      "browser": true,
-      "es6": true
-    },
-    "globals": {
-      "window": true,
-      "localStorage": true,
-      "sessionStorage": true,
-      "document": true,
-      "module": true
-    },
-    "parserOptions": {
-      "ecmaVersion": 2020,
-      "requireConfigFile": false,
-      "ecmaFeatures": {
-        "legacyDecorators": true,
-        "jsx": true
-      },
-      "babelOptions": {
-        "presets": [
-          "@babel/preset-react"
-        ]
-      }
-    },
-    "settings": {
-      "react": {
-        "version": "18"
-      }
-    },
-    "rules": {
-      "no-unused-vars": "off",
-      "react/no-find-dom-node": "off",
-      "quotes": [
-        2,
-        "single",
-        {
-          "avoidEscape": true,
-          "allowTemplateLiterals": true
-        }
-      ],
-      "react/react-in-jsx-scope": "off",
-      "standard/no-callback-literal": 0,
-      "space-before-function-paren": 0,
-      "react/prop-types": 0,
-      "react/jsx-handler-names": 0,
-      "react/jsx-fragments": 0,
-      "react/no-unused-prop-types": 0,
-      "import/export": 0,
-      "react/jsx-first-prop-new-line": [
-        2,
-        "multiline"
-      ],
-      "react/jsx-max-props-per-line": [
-        2,
-        {
-          "maximum": 1,
-          "when": "multiline"
-        }
-      ],
-      "react/jsx-indent-props": [
-        2,
-        2
-      ],
-      "react/jsx-closing-bracket-location": [
-        2,
-        "tag-aligned"
-      ],
-      "react/no-did-update-set-state": 0
-    }
   }
 }

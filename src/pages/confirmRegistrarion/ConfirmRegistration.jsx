@@ -22,21 +22,13 @@ const ConfirmRegistration = () => {
       } else {
         console.log(response)
       }
-
     })
-
   }, [confirmToken, token])
 
   return (
     <div className={classes.page}>
       <div className={classes.container}>
-        <Grid
-          container
-          flexDirection='column'
-          justifyContent='flex-start'
-          alignItems='center'
-          className={classes.message}
-        >
+        <Grid container flexDirection='column' justifyContent='flex-start' alignItems='center' className={classes.message}>
           <Grid item className={classes.header}>
             <Grid container justifyContent='center' alignItems='center'>
               <Grid className={classes.img}>

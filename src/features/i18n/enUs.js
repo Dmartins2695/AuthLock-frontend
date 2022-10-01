@@ -6,7 +6,7 @@ export const enUS = {
   login: 'Login in',
   app_name: 'AuthLock',
   forgot_password: 'Forgot password?',
-  sing_up: 'Don\'t have an account? Sign Up',
+  sing_up: "Don't have an account? Sign Up",
   logout: 'Logout',
   total: 'Total',
   outdated: 'Outdated',

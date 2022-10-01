@@ -4,13 +4,10 @@ export const emailValidator = (email) => {
 
   let message = ''
 
-  message = regexEmail.test(value)
-    ? message
-    : 'Email is not valid'
+  message = regexEmail.test(value) ? message : 'Email is not valid'
 
   const error = message !== ''
   return { error: error, errorMessage: message }
-
 }
 
 export const passwordValidator = (password) => {
@@ -23,21 +20,11 @@ export const passwordValidator = (password) => {
 
   let message = ''
 
-  message = regexNum.test(value)
-    ? message
-    : 'Password requires at least 1 number'
-  message = regexLowercase.test(value)
-    ? message
-    : 'Password requires at least 1 lower case'
-  message = regexUppercase.test(value)
-    ? message
-    : 'Password requires at least 1 upper case'
-  message = regexCharLength.test(value)
-    ? message
-    : 'Password length needs to range between 16 to 72 chars'
-  message = regexSpecialChars.test(value)
-    ? message
-    : 'Password requires at least 1 special char (#,@,$,?, ,!,%,&,€)'
+  message = regexNum.test(value) ? message : 'Password requires at least 1 number'
+  message = regexLowercase.test(value) ? message : 'Password requires at least 1 lower case'
+  message = regexUppercase.test(value) ? message : 'Password requires at least 1 upper case'
+  message = regexCharLength.test(value) ? message : 'Password length needs to range between 16 to 72 chars'
+  message = regexSpecialChars.test(value) ? message : 'Password requires at least 1 special char (#,@,$,?, ,!,%,&,€)'
 
   const error = message !== ''
   return { error: error, errorMessage: message }

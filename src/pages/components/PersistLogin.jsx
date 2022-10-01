@@ -10,7 +10,6 @@ const PersistLogin = () => {
   const persist = useSelector(selectCurrentPersist)
   const dispatch = useDispatch()
 
-
   useEffect(() => {
     let isMounted = true
     const verifyRefreshToken = async () => {
@@ -27,19 +26,9 @@ const PersistLogin = () => {
     }
     persist ? verifyRefreshToken() : setIsLoading(false)
 
-    return () => isMounted = false
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    return () => (isMounted = false)
   }, [])
-  return (
-    <>
-      {!persist
-        ? <Outlet />
-        : isLoading
-          ? <p>Loading...</p>
-          : <Outlet />
-      }
-    </>
-  )
+  return <>{!persist ? <Outlet /> : isLoading ? <p>Loading...</p> : <Outlet />}</>
 }
 
 export default PersistLogin

@@ -1,23 +1,23 @@
 import { apiSlice } from '../../app/api/apiSlice'
 
 export const authApiSlice = apiSlice.injectEndpoints({
-  endpoints: builder => ({
+  endpoints: (builder) => ({
     login: builder.mutation({
-      query: credentials => ({
+      query: (credentials) => ({
         url: '/auth/login ',
         method: 'POST',
         body: { ...credentials }
       })
     }),
     register: builder.mutation({
-      query: credentials => ({
+      query: (credentials) => ({
         url: '/registration',
         method: 'POST',
         body: { ...credentials }
       })
     }),
     confirmToken: builder.mutation({
-      query: token => ({
+      query: (token) => ({
         url: '/registration/confirm',
         method: 'GET',
         params: { token }
@@ -38,10 +38,4 @@ export const authApiSlice = apiSlice.injectEndpoints({
   })
 })
 
-export const {
-  useLoginMutation,
-  useRefreshMutation,
-  useLogoutMutation,
-  useRegisterMutation,
-  useConfirmTokenMutation
-} = authApiSlice
+export const { useLoginMutation, useRefreshMutation, useLogoutMutation, useRegisterMutation, useConfirmTokenMutation } = authApiSlice

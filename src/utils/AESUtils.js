@@ -31,12 +31,8 @@ const decryptWithIvSalt = (salt, iv, passPhrase, cipherText) => {
 }
 
 export const encrypt = (passPhrase, plainText) => {
-  let iv = CryptoJS.lib.WordArray.random(_ivSize / 8).toString(
-    CryptoJS.enc.Hex
-  )
-  let salt = CryptoJS.lib.WordArray.random(_keySize / 8).toString(
-    CryptoJS.enc.Hex
-  )
+  let iv = CryptoJS.lib.WordArray.random(_ivSize / 8).toString(CryptoJS.enc.Hex)
+  let salt = CryptoJS.lib.WordArray.random(_keySize / 8).toString(CryptoJS.enc.Hex)
   let ciphertext = encryptWithIvSalt(salt, iv, passPhrase, plainText)
   return salt + iv + ciphertext
 }

@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import jwtDecode from 'jwt-decode'
 
-
 const getPersistInitialState = () => {
   const localStorageVariable = localStorage.getItem('persist')
   if (localStorageVariable?.match(/^true$|^false$/gm)) {

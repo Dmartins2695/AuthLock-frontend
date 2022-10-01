@@ -14,7 +14,6 @@ const NotFound = () => {
   return <h1>NOT FOUND</h1>
 }
 
-
 const Unauthorized = () => {
   return <h2>UNAUTHORIZED</h2>
 }
@@ -22,7 +21,6 @@ const Unauthorized = () => {
 function App() {
   return (
     <Routes>
-
       <Route path='/' element={<Navigate replace to='/dashboard' />} />
       <Route exact path='registration/confirm/:token' element={<ConfirmRegistration />} />
       {/* * Public Routes*/}
@@ -49,6 +47,5 @@ function App() {
     </Routes>
   )
 }
-
 
 export default App

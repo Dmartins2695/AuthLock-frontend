@@ -32,7 +32,6 @@ const RenderItem = () => {
 }
 
 export const Body = () => {
-  
   return (
     <Grid className={classes.bodyDataArea}>
       <Grid className={classes.bodyDataTable}>

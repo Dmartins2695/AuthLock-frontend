@@ -34,7 +34,9 @@ export const Header = () => {
           <div className={classes.headerRowInnerWrapper}>
             <img className={classes.headerLogo} src={Logo} alt='logo' />
             <div className={classes.logoutButton}>
-              <Button variant='contained' onClick={signOut}>{i18n('logout')}</Button>
+              <Button variant='contained' onClick={signOut}>
+                {i18n('logout')}
+              </Button>
             </div>
           </div>
         </div>
