@@ -37,6 +37,20 @@
         "endOfLine": "auto"
       }
     ],
-    "react/prop-types": 0
+    "no-unused-vars": "off",
+    "react/no-find-dom-node": "off",
+    "quotes": [2, "single", { "avoidEscape": true, "allowTemplateLiterals": true }],
+    "standard/no-callback-literal": 0,
+    "space-before-function-paren": 0,
+    "react/prop-types": 0,
+    "react/jsx-handler-names": 0,
+    "react/jsx-fragments": 0,
+    "react/no-unused-prop-types": 0,
+    "import/export": 0,
+    "react/jsx-first-prop-new-line": [2, "multiline"],
+    "react/jsx-max-props-per-line": [2, { "maximum": 1, "when": "multiline" }],
+    "react/jsx-indent-props": [2, 2],
+    "react/jsx-closing-bracket-location": [2, "tag-aligned"],
+    "react/no-did-update-set-state": 0
   }
 }
