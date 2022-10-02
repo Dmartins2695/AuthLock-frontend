@@ -11,24 +11,36 @@ import { selectCurrentUserId } from '../../../features/auth/authSlice'
 import { selectCurrentPasswords, setPasswords } from '../../../features/password/passwordSlice'
 import { i18n } from '../../../features/i18n/i18n'
 import { differenceInDays } from 'date-fns'
+import MoreVertIcon from '@mui/icons-material/MoreVert'
 
 const RenderColumnsTitles = () => {
   return (
-    <Grid className={classes.bodyDataItem} sx={{ background: 'rgba(232, 244, 255, 0.6)', borderBottom: '1px solid #b7b7b7' }}>
-      <Grid className={classes.bodyDataItemFavorite}>
+    <Grid
+      container
+      justifyContent='flex-start'
+      alignItems='center'
+      sx={{ background: 'rgba(232, 244, 255, 0.6)', borderBottom: '1px solid #b7b7b7' }}
+    >
+      <Grid item xs={1} className={classes.bodyDataItemNumber}>
+        <Typography>{i18n('table_title_number')}</Typography>
+      </Grid>
+      <Grid item xs={1} className={classes.bodyDataItemFavorite}>
         <Typography>{i18n('table_title_favorite')}</Typography>
       </Grid>
-      <Grid className={classes.bodyDataItemWebsite}>
+      <Grid item xs={3} className={classes.bodyDataItemWebsite}>
         <Typography>{i18n('table_title_website')}</Typography>
       </Grid>
-      <Grid className={classes.bodyDataItePassword}>
+      <Grid item xs={3} className={classes.bodyDataItePassword}>
         <Typography>{i18n('table_title_password')}</Typography>
       </Grid>
-      <Grid className={classes.bodyDataItemCreatedAt}>
+      <Grid item xs={2} className={classes.bodyDataItemCreatedAt}>
         <Typography>{i18n('table_title_date_of_creation')}</Typography>
       </Grid>
-      <Grid className={classes.bodyDataItemWeak}>
+      <Grid item xs={1} className={classes.bodyDataItemWeak}>
         <Typography>{i18n('table_title_strength')}</Typography>
+      </Grid>
+      <Grid item xs={1} className={classes.bodyDataItemSettings}>
+        <Typography>{i18n('table_title_settings')}</Typography>
       </Grid>
     </Grid>
   )
@@ -42,20 +54,28 @@ const RenderItem = ({ item, index }) => {
       : differenceInDays(new Date(item?.createdAt), new Date()) * -1
 
   return (
-    <Grid className={classes.bodyDataItem} sx={style}>
-      <Grid className={classes.bodyDataItemFavorite}>{item?.favorite ? <StarIcon /> : <StarOutlineIcon />}</Grid>
-      <Grid className={classes.bodyDataItemWebsite}>
+    <Grid container justifyContent='flex-start' alignItems='center' sx={style}>
+      <Grid item xs={1} className={classes.bodyDataItemNumber}>
+        <Typography>{index + 1}</Typography>
+      </Grid>
+      <Grid item xs={1} className={classes.bodyDataItemFavorite}>
+        {item?.favorite ? <StarIcon /> : <StarOutlineIcon />}
+      </Grid>
+      <Grid item xs={3} className={classes.bodyDataItemWebsite}>
         <Typography>{item?.websiteUrl}</Typography>
       </Grid>
-      <Grid className={classes.bodyDataItePassword}>
+      <Grid item xs={3} className={classes.bodyDataItePassword}>
         <Typography>{item?.value}</Typography>
         {/*<VisibilityOffIcon />*/}
       </Grid>
-      <Grid className={classes.bodyDataItemCreatedAt}>
+      <Grid item xs={2} className={classes.bodyDataItemCreatedAt}>
         <Typography>{createdAt} days ago</Typography>
       </Grid>
-      <Grid className={classes.bodyDataItemWeak}>
+      <Grid item xs={1} className={classes.bodyDataItemWeak}>
         {item?.weak ? <ShieldIcon style={{ color: 'red' }} /> : <ShieldIcon style={{ color: 'green' }} />}
+      </Grid>
+      <Grid item xs={1} className={classes.bodyDataItemSettings}>
+        <MoreVertIcon />
       </Grid>
     </Grid>
   )

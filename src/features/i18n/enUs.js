@@ -16,5 +16,7 @@ export const enUS = {
   table_title_website: 'Website',
   table_title_password: 'Password',
   table_title_date_of_creation: 'Date of Creation',
-  table_title_strength: 'Strength'
+  table_title_strength: 'Strength',
+  table_title_number: 'Nr',
+  table_title_settings: 'Settings'
 }
