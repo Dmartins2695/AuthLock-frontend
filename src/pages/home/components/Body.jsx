@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { selectCurrentUserId } from '../../../features/auth/authSlice'
 import { selectCurrentPasswords, setPasswords } from '../../../features/password/passwordSlice'
 import { i18n } from '../../../features/i18n/i18n'
+import { differenceInDays } from 'date-fns'
 
 const RenderColumnsTitles = () => {
   return (
@@ -35,6 +36,11 @@ const RenderColumnsTitles = () => {
 
 const RenderItem = ({ item, index }) => {
   const style = index % 2 !== 0 ? { background: 'rgba(232, 244, 255, 0.6)' } : {}
+  const createdAt =
+    differenceInDays(new Date(item?.createdAt), new Date()) >= 0
+      ? differenceInDays(new Date(item?.createdAt), new Date())
+      : differenceInDays(new Date(item?.createdAt), new Date()) * -1
+
   return (
     <Grid className={classes.bodyDataItem} sx={style}>
       <Grid className={classes.bodyDataItemFavorite}>{item?.favorite ? <StarIcon /> : <StarOutlineIcon />}</Grid>
@@ -46,7 +52,7 @@ const RenderItem = ({ item, index }) => {
         {/*<VisibilityOffIcon />*/}
       </Grid>
       <Grid className={classes.bodyDataItemCreatedAt}>
-        <Typography>{item?.lastUpdateDays ? item?.lastUpdateDays : '?'} days ago</Typography>
+        <Typography>{createdAt} days ago</Typography>
       </Grid>
       <Grid className={classes.bodyDataItemWeak}>
         {item?.weak ? <ShieldIcon style={{ color: 'red' }} /> : <ShieldIcon style={{ color: 'green' }} />}
