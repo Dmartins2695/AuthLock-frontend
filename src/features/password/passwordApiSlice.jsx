@@ -7,8 +7,14 @@ export const passwordsApiSlice = apiSlice.injectEndpoints({
         url: `/user/stored-passwords/${userId}`,
         method: 'GET'
       })
+    }),
+    getFavorites: builder.mutation({
+      query: (userId) => ({
+        url: `/user/stored-passwords/favorites/${userId}`,
+        method: 'GET'
+      })
     })
   })
 })
 
-export const { useGetPasswordsMutation } = passwordsApiSlice
+export const { useGetPasswordsMutation, useGetFavoritesMutation } = passwordsApiSlice
