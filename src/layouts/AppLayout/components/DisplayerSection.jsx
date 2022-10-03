@@ -6,6 +6,7 @@ import { useGetDuplicatedCountMutation, useGetOutdatedCountMutation, useGetWeakC
 import { useDispatch, useSelector } from 'react-redux'
 import { selectCurrentUserId } from '../../../features/auth/authSlice'
 import { selectCurrentAnalytics, setAnalytics } from '../../../features/analitics/analyticsSlice'
+import { selectCurrentPasswords } from '../../../features/password/passwordSlice'
 
 export const DisplayersSection = () => {
   const userId = useSelector(selectCurrentUserId)
@@ -14,6 +15,7 @@ export const DisplayersSection = () => {
   const [getWeakCount] = useGetWeakCountMutation()
   const [getDuplicatedCount] = useGetDuplicatedCountMutation()
   const analytics = useSelector(selectCurrentAnalytics)
+  const passwords = useSelector(selectCurrentPasswords)
 
   useEffect(() => {
     const callOutdated = async () => {
@@ -54,7 +56,7 @@ export const DisplayersSection = () => {
       <div className={classes.headerRowInnerWrapper}>
         <div className={classes.headerColumnInnerWrapper}>
           <div className={classes.headerRoundDisPlayer}>
-            <Typography>0</Typography>
+            <Typography>{passwords.length}</Typography>
           </div>
           <div>
             <Typography className={classes.disPlayersText}>{i18n('total')}</Typography>
