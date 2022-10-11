@@ -1,9 +1,12 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import classes from './Body.module.sass'
-import StarOutlineIcon from '@mui/icons-material/StarOutline'
 import StarIcon from '@mui/icons-material/Star'
-import { Typography } from '@mui/material'
-import ShieldIcon from '@mui/icons-material/Shield'
+import StarOutlineIcon from '@mui/icons-material/StarOutline'
+import { IconButton, Typography } from '@mui/material'
+import VisibilityIcon from '@mui/icons-material/Visibility'
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
+import GppGoodIcon from '@mui/icons-material/GppGood'
+import GppBadIcon from '@mui/icons-material/GppBad'
 import Grid from '@mui/material/Grid'
 import { useGetPasswordsMutation } from '../../../features/password/passwordApiSlice'
 import { useDispatch, useSelector } from 'react-redux'
@@ -47,11 +50,15 @@ const RenderColumnsTitles = () => {
 }
 
 const RenderItem = ({ item, index }) => {
+  const [visible, setVisible] = useState(false)
   const style = index % 2 !== 0 ? { background: 'rgba(232, 244, 255, 0.6)' } : {}
   const createdAt =
     differenceInDays(new Date(item?.createdAt), new Date()) >= 0
       ? differenceInDays(new Date(item?.createdAt), new Date())
       : differenceInDays(new Date(item?.createdAt), new Date()) * -1
+
+  const handleFavoriteButton = () => {}
+  const handleItemMenu = () => {}
 
   return (
     <Grid container justifyContent='flex-start' alignItems='center' sx={style}>
@@ -59,23 +66,41 @@ const RenderItem = ({ item, index }) => {
         <Typography>{index + 1}</Typography>
       </Grid>
       <Grid item xs={1} className={classes.bodyDataItemFavorite}>
-        {item?.favorite ? <StarIcon /> : <StarOutlineIcon />}
+        <IconButton size='small' onClick={handleFavoriteButton}>
+          {item?.favorite ? <StarIcon style={{ color: 'rgb(245 183 69)' }} /> : <StarOutlineIcon style={{ color: 'rgb(179 179 179)' }} />}
+        </IconButton>
       </Grid>
       <Grid item xs={3} className={classes.bodyDataItemWebsite}>
         <Typography>{item?.websiteUrl}</Typography>
       </Grid>
       <Grid item xs={3} className={classes.bodyDataItePassword}>
-        <Typography>{item?.value}</Typography>
-        {/*<VisibilityOffIcon />*/}
+        <Grid container flexDirection='row' justifyContent='center' alignItems='center'>
+          <Grid item>
+            <Typography>{visible ? item?.value : new Array(item?.value.length + 1).join('\u25CF')}</Typography>
+          </Grid>
+          <Grid item>
+            {visible ? (
+              <IconButton size='small' onClick={() => setVisible((prevState) => !prevState)}>
+                <VisibilityIcon sx={{ width: '0.8em', height: '0.8em' }} />
+              </IconButton>
+            ) : (
+              <IconButton size='small' onClick={() => setVisible((prevState) => !prevState)}>
+                <VisibilityOffIcon sx={{ width: '0.8em', height: '0.8em' }} />
+              </IconButton>
+            )}
+          </Grid>
+        </Grid>
       </Grid>
       <Grid item xs={2} className={classes.bodyDataItemCreatedAt}>
         <Typography>{createdAt} days ago</Typography>
       </Grid>
       <Grid item xs={1} className={classes.bodyDataItemWeak}>
-        {item?.weak ? <ShieldIcon style={{ color: 'red' }} /> : <ShieldIcon style={{ color: 'green' }} />}
+        {item?.weak ? <GppBadIcon style={{ color: 'red' }} /> : <GppGoodIcon style={{ color: 'green' }} />}
       </Grid>
       <Grid item xs={1} className={classes.bodyDataItemSettings}>
-        <MoreVertIcon />
+        <IconButton size='small' onClick={handleItemMenu}>
+          <MoreVertIcon />
+        </IconButton>
       </Grid>
     </Grid>
   )
