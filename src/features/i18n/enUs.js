@@ -16,7 +16,10 @@ export const enUS = {
   table_title_website: 'Website',
   table_title_password: 'Password',
   table_title_date_of_creation: 'Date of Creation',
+  table_title_date_of_update: 'Last Updated',
   table_title_strength: 'Strength',
   table_title_number: 'Nr',
-  table_title_settings: 'Settings'
+  table_title_settings: 'Settings',
+  pop_over_edit: 'Edit Password',
+  pop_over_delete: 'Delete Password'
 }

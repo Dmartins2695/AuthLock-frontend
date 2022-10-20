@@ -13,8 +13,15 @@ export const passwordsApiSlice = apiSlice.injectEndpoints({
         url: `/user/stored-passwords/favorites/${userId}`,
         method: 'GET'
       })
+    }),
+    updatePasswordApi: builder.mutation({
+      query: ({ userId, id, password, websiteUrl }) => ({
+        url: `/user/${userId}/${id}/update`,
+        method: 'POST',
+        body: { password, websiteUrl }
+      })
     })
   })
 })
 
-export const { useGetPasswordsMutation, useGetFavoritesMutation } = passwordsApiSlice
+export const { useGetPasswordsMutation, useGetFavoritesMutation, useUpdatePasswordApiMutation } = passwordsApiSlice

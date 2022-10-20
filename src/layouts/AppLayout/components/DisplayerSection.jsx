@@ -49,7 +49,7 @@ export const DisplayersSection = () => {
         dispatch(setAnalytics({ name: 'outdated', count: response.data.count }))
       }
     })
-  }, [])
+  }, [passwords])
 
   return (
     <div className={classes.headerColumnDisPlayerWrapper}>
