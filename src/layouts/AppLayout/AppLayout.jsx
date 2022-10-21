@@ -9,7 +9,7 @@ const AppLayout = () => {
     <Grid sx={{ backgroundImage: 'url' + '(https://source.unsplash.com/random/1920x1080/?nature)' }}>
       <Grid className={classes.body}>
         <Grid className={classes.container}>
-          <Header l />
+          <Header />
           <Grid className={classes.bodyArea}>
             <Outlet />
           </Grid>

@@ -58,7 +58,7 @@ export const DisplayersSection = () => {
           <div className={classes.headerRoundDisPlayer}>
             <Typography>{passwords.length}</Typography>
           </div>
-          <div>
+          <div className={classes.headerDisPlayerText}>
             <Typography className={classes.disPlayersText}>{i18n('total')}</Typography>
           </div>
         </div>
@@ -66,7 +66,7 @@ export const DisplayersSection = () => {
           <div className={classes.headerRoundDisPlayer}>
             <Typography>{analytics?.outdated}</Typography>
           </div>
-          <div>
+          <div className={classes.headerDisPlayerText}>
             <Typography className={classes.disPlayersText}>{i18n('outdated')}</Typography>
           </div>
         </div>
@@ -74,7 +74,7 @@ export const DisplayersSection = () => {
           <div className={classes.headerRoundDisPlayer}>
             <Typography>{analytics?.duplicated}</Typography>
           </div>
-          <div>
+          <div className={classes.headerDisPlayerText}>
             <Typography className={classes.disPlayersText}>{i18n('duplicated')}</Typography>
           </div>
         </div>
@@ -82,7 +82,7 @@ export const DisplayersSection = () => {
           <div className={classes.headerRoundDisPlayer}>
             <Typography>{analytics?.weak}</Typography>
           </div>
-          <div>
+          <div className={classes.headerDisPlayerText}>
             <Typography className={classes.disPlayersText}>{i18n('weak')}</Typography>
           </div>
         </div>

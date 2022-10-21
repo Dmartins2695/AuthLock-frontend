@@ -33,14 +33,14 @@ export const Header = () => {
         <div className={classes.headerColumnLogoWrapper}>
           <div className={classes.headerRowInnerWrapper}>
             <img className={classes.headerLogo} src={Logo} alt='logo' />
-            <div className={classes.logoutButton}>
-              <Button variant='contained' onClick={signOut}>
-                {i18n('logout')}
-              </Button>
-            </div>
+            <DisplayersSection />
           </div>
         </div>
-        <DisplayersSection />
+        <div className={classes.logoutButton}>
+          <Button variant='contained' onClick={signOut}>
+            {i18n('logout')}
+          </Button>
+        </div>
       </div>
     </div>
   )

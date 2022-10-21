@@ -17,7 +17,7 @@
   align-items: center
   border-radius: 1em
   grid-auto-columns: 1fr
-  grid-template-rows: 0.3fr 1.7fr
+  grid-template-rows: 0.1fr 1.7fr
   gap: 0
 
 .headerArea
@@ -50,19 +50,24 @@
 
 .headerLogo
   box-shadow: 0 1px 10px 5px rgb(9 30 66 / 25%)
-  width: 6em
+  width: 3em
   height: auto
-  border-radius: 50%
+  border-radius: 15%
   margin-left: 1em
 
 .headerRoundDisPlayer
   box-shadow: 0 1px 10px 5px rgb(9 30 66 / 25%)
-  height: 4em
-  width: 4em
-  border-radius: 50%
+  height: 2.5em
+  width: 2.5em
+  border-radius: 15%
   background: $displayers
-  margin: .5em 1em 0.5em 1em
+  margin: 2em 1em 0.5em 2em
   @include centerChildren
+
+.headerDisPlayerText
+  padding-left: 1em
+  padding-bottom: 0.5em
+
 
 .disPlayersText
   color: $headerTextColor
