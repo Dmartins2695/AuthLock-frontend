@@ -21,5 +21,7 @@ export const enUS = {
   table_title_number: 'Nr',
   table_title_settings: 'Settings',
   pop_over_edit: 'Edit Password',
-  pop_over_delete: 'Delete Password'
+  pop_over_delete: 'Delete Password',
+  remember_me: 'Remember me',
+  pop_over_logout: 'Sign Out'
 }

@@ -112,7 +112,7 @@ export default function Login() {
             />
             <FormControlLabel
               control={<Checkbox id='persist' value='persist' color='primary' onChange={togglePersistLogin} />}
-              label='Trust this device'
+              label={i18n('remember_me')}
             />
             <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
               {i18n('login')}
