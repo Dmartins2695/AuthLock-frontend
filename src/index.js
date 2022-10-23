@@ -13,12 +13,26 @@ import { createTheme, ThemeProvider } from '@mui/material'
 const root = ReactDOM.createRoot(document.getElementById('root'))
 
 const theme = createTheme({
+  palette: {
+    secondary: {
+      main: '#ec1d24',
+      contrastText: '#f4f4f4'
+    },
+    primary: {
+      main: '#77B2D5FF',
+      contrastText: '#ffffff'
+    }
+  },
   typography: {
     fontFamily: `-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif`,
     fontSize: 14,
     fontWeightLight: 300,
     fontWeightRegular: 400,
-    fontWeightMedium: 500
+    fontWeightMedium: 500,
+    button: {
+      textTransform: 'none',
+      fontSize: 12
+    }
   }
 })
 

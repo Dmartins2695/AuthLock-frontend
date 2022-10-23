@@ -23,5 +23,10 @@ export const enUS = {
   pop_over_edit: 'Edit Password',
   pop_over_delete: 'Delete Password',
   remember_me: 'Remember me',
-  pop_over_logout: 'Sign Out'
+  pop_over_logout: 'Sign Out',
+  pop_over_add_password: 'New Password',
+  pop_over_password_field: 'Password',
+  pop_over_url_field: 'Website Url',
+  cancel: 'Cancel',
+  create: 'Create'
 }

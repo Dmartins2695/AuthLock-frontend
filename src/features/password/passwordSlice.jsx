@@ -8,17 +8,22 @@ const passwordsSlice = createSlice({
       const { passwords } = action.payload
       state.passwords = passwords
     },
-    addNewPassword: (state) => {
-      state.passwords = [{}, ...state.passwords]
+    addNewPassword: (state, action) => {
+      const { password } = action.payload
+      state.passwords = [...state.passwords, password]
     },
     updatePassword: (state, action) => {
       const { password, index } = action.payload
       state.passwords[index] = password
+    },
+    deletePassword: (state, action) => {
+      const { index } = action.payload
+      state.passwords.splice(index, 1)
     }
   }
 })
 
-export const { setPasswords, addNewPassword, updatePassword } = passwordsSlice.actions
+export const { setPasswords, addNewPassword, updatePassword, deletePassword } = passwordsSlice.actions
 
 export default passwordsSlice.reducer
 

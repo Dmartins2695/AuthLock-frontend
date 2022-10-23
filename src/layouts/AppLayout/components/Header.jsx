@@ -18,6 +18,10 @@ const LogoutMenu = ({ anchorEl, setAnchorEl }) => {
   const [logout] = useLogoutMutation()
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
+
   const signOut = async () => {
     await logout().then((response) => {
       if (response.error) {
@@ -30,12 +34,8 @@ const LogoutMenu = ({ anchorEl, setAnchorEl }) => {
     })
   }
 
-  const handleClose = () => {
-    setAnchorEl(null)
-  }
-
   const open = Boolean(anchorEl)
-  const id = open ? 'simple-popover' : undefined
+  const id = open ? 'logout-popover' : undefined
 
   return (
     <Popover
@@ -72,8 +72,23 @@ const LogoutMenu = ({ anchorEl, setAnchorEl }) => {
 
 export const Header = () => {
   const [anchorEl, setAnchorEl] = React.useState(null)
+  const [logout] = useLogoutMutation()
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
   const handleOpen = (event) => {
     setAnchorEl(event.currentTarget)
+  }
+
+  const signOut = async () => {
+    await logout().then((response) => {
+      if (response.error) {
+        console.error(response.error)
+      } else {
+        dispatch(logOut())
+        localStorage.removeItem('persist')
+        navigate('/auth/login')
+      }
+    })
   }
 
   return (
@@ -86,10 +101,19 @@ export const Header = () => {
           </div>
         </div>
         <div className={classes.menuButton}>
-          <IconButton size='medium' onClick={handleOpen}>
-            <ArrowDropDownCircleOutlinedIcon style={{ color: 'rgb(245, 247, 255)', width: 30, height: 30 }} />
-          </IconButton>
-          <LogoutMenu anchorEl={anchorEl} setAnchorEl={setAnchorEl} />
+          <Grid container flexDirection='row' justifyContent='center' alignItems='center'>
+            <Grid item>
+              <IconButton size='medium' onClick={handleOpen}>
+                <ArrowDropDownCircleOutlinedIcon style={{ color: 'rgb(245, 247, 255)', width: 30, height: 30 }} />
+              </IconButton>
+              <LogoutMenu anchorEl={anchorEl} setAnchorEl={setAnchorEl} />
+            </Grid>
+            <Grid item>
+              <IconButton size='medium' onClick={signOut}>
+                <LogoutIcon style={{ width: 30, height: 30 }} />
+              </IconButton>
+            </Grid>
+          </Grid>
         </div>
       </div>
     </div>

@@ -2,15 +2,20 @@ import React, { useEffect, useState } from 'react'
 import classes from './Body.module.sass'
 import StarIcon from '@mui/icons-material/Star'
 import StarOutlineIcon from '@mui/icons-material/StarOutline'
-import { IconButton, Popover, Typography } from '@mui/material'
+import { IconButton, InputAdornment, Popover, Typography } from '@mui/material'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import SecurityIcon from '@mui/icons-material/Security'
 import Grid from '@mui/material/Grid'
-import { useGetPasswordsMutation, useUpdatePasswordApiMutation } from '../../../features/password/passwordApiSlice'
+import {
+  useCreatePasswordApiMutation,
+  useDeletePasswordApiMutation,
+  useGetPasswordsMutation,
+  useUpdatePasswordApiMutation
+} from '../../../features/password/passwordApiSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectCurrentUserId } from '../../../features/auth/authSlice'
-import { addNewPassword, selectCurrentPasswords, setPasswords, updatePassword } from '../../../features/password/passwordSlice'
+import { addNewPassword, deletePassword, selectCurrentPasswords, setPasswords, updatePassword } from '../../../features/password/passwordSlice'
 import { i18n } from '../../../features/i18n/i18n'
 import { differenceInDays } from 'date-fns'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
@@ -21,8 +26,114 @@ import ModeEditIcon from '@mui/icons-material/ModeEdit'
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
+import LanguageIcon from '@mui/icons-material/Language'
+import PasswordIcon from '@mui/icons-material/Password'
 
-const RenderColumnsTitles = ({ handleAddNewPassword }) => {
+const AddPasswordMenu = ({ anchorEl, setAnchorEl }) => {
+  const [data, setData] = useState({ websiteUrl: '', password: '' })
+  const [createPasswordApi] = useCreatePasswordApiMutation()
+  const dispatch = useDispatch()
+  const userId = useSelector(selectCurrentUserId)
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
+
+  const handleCreate = async () => {
+    await createPasswordApi({ userId, password: data.password, websiteUrl: data.websiteUrl }).then((response) => {
+      if (response.error) {
+        console.error(response.error)
+      } else {
+        dispatch(addNewPassword({ password: response.data }))
+        setData({ websiteUrl: '', password: '' })
+        handleClose()
+      }
+    })
+  }
+
+  const onChange = (e) => {
+    setData((prevState) => ({ ...prevState, [e.target.id]: e.target.value }))
+  }
+
+  const open = Boolean(anchorEl)
+  const id = open ? 'add-password-popover' : undefined
+  return (
+    <Popover
+      id={id}
+      open={open}
+      anchorEl={anchorEl}
+      onClose={handleClose}
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'left'
+      }}
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'left'
+      }}
+    >
+      <Grid style={{ padding: '2em', width: '30rem' }}>
+        <Typography style={{ color: '#77B2D5' }}>{i18n('pop_over_add_password')}</Typography>
+        <Grid container flexDirection='column' justifyContent='center' alignItems='flex-start' style={{ padding: '2em 1em 0 1em' }}>
+          <Grid item xs={12} style={{ padding: '1em 0', width: '100%' }}>
+            <TextField
+              id='password'
+              label={i18n('pop_over_password_field')}
+              variant='standard'
+              value={data.password}
+              onChange={onChange}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position='start'>
+                    <PasswordIcon />
+                  </InputAdornment>
+                )
+              }}
+              style={{ width: '100%' }}
+            />
+          </Grid>
+          <Grid item style={{ width: '100%' }}>
+            <TextField
+              id='websiteUrl'
+              label={i18n('pop_over_url_field')}
+              variant='standard'
+              value={data.url}
+              onChange={onChange}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position='start'>
+                    <LanguageIcon />
+                  </InputAdornment>
+                )
+              }}
+              style={{ width: '100%' }}
+            />
+          </Grid>
+          <Grid item style={{ width: '100%' }}>
+            <Grid container flexDirection='row' justifyContent='space-between' alignItems='center' style={{ paddingTop: '1em', width: '100%' }}>
+              <Grid item>
+                <Button size='small' onClick={handleClose} color='secondary'>
+                  <Typography>{i18n('cancel')}</Typography>
+                </Button>
+              </Grid>
+              <Grid item>
+                <Button size='small' onClick={handleCreate}>
+                  <Typography>{i18n('create')}</Typography>
+                </Button>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
+    </Popover>
+  )
+}
+
+const RenderColumnsTitles = () => {
+  const [anchorEl, setAnchorEl] = React.useState(null)
+  const handleOpen = (event) => {
+    setAnchorEl(event.currentTarget)
+  }
+
   return (
     <Grid
       container
@@ -32,9 +143,10 @@ const RenderColumnsTitles = ({ handleAddNewPassword }) => {
       sx={{ background: 'rgba(232, 244, 255, 0.6)', borderBottom: '1px solid #b7b7b7' }}
     >
       <Grid item xs={0.3}>
-        <IconButton size='small' onClick={handleAddNewPassword}>
+        <IconButton size='small' onClick={handleOpen}>
           <AddIcon sx={{ color: '#20c015' }} />
         </IconButton>
+        <AddPasswordMenu anchorEl={anchorEl} setAnchorEl={setAnchorEl} />
       </Grid>
       <Grid item xs={11.6}>
         <Grid container flexDirection='row' justifyContent='flex-start' alignItems='center'>
@@ -68,27 +180,16 @@ const RenderColumnsTitles = ({ handleAddNewPassword }) => {
 const RenderEditItem = ({ item, index, setEditObj }) => {
   const [data, setData] = useState({ websiteUrl: item?.websiteUrl, password: item?.value })
   const style = index % 2 !== 0 ? { background: 'rgba(232, 244, 255, 0.6)' } : {}
-  const createdAt =
-    differenceInDays(new Date(item?.createdAt), new Date()) >= 0
-      ? differenceInDays(new Date(item?.createdAt), new Date())
-      : differenceInDays(new Date(item?.createdAt), new Date()) * -1
-  const updatedAt =
-    differenceInDays(new Date(item?.updatedAt), new Date()) >= 0
-      ? differenceInDays(new Date(item?.updatedAt), new Date())
-      : differenceInDays(new Date(item?.updatedAt), new Date()) * -1
+  const { createdAt, updatedAt } = getDates(item)
   const dispatch = useDispatch()
   const [updatePasswordApi] = useUpdatePasswordApiMutation()
   const userId = useSelector(selectCurrentUserId)
-  const handleItemMenu = () => {
-    setEditObj((prevState) => !prevState)
-  }
 
   const handleConfirmEdit = () => {
     updatePasswordApi({ userId, password: data.password, websiteUrl: data.websiteUrl, id: item.id }).then((response) => {
       if (response.error) {
         console.error(response.error)
       } else {
-        console.log(response)
         dispatch(updatePassword({ password: response.data, index }))
         setEditObj({ edit: false, rowNumber: -1 })
       }
@@ -158,11 +259,7 @@ const RenderEditItem = ({ item, index, setEditObj }) => {
   )
 }
 
-const RenderItem = ({ item, index, setEditObj }) => {
-  const [visible, setVisible] = useState(false)
-  const style = index % 2 !== 0 ? { background: 'rgba(232, 244, 255, 0.6)' } : {}
-  const [anchorEl, setAnchorEl] = React.useState(null)
-
+const getDates = (item) => {
   const createdAt =
     differenceInDays(new Date(item?.createdAt), new Date()) >= 0
       ? differenceInDays(new Date(item?.createdAt), new Date())
@@ -171,12 +268,30 @@ const RenderItem = ({ item, index, setEditObj }) => {
     differenceInDays(new Date(item?.updatedAt), new Date()) >= 0
       ? differenceInDays(new Date(item?.updatedAt), new Date())
       : differenceInDays(new Date(item?.updatedAt), new Date()) * -1
+  return { createdAt, updatedAt }
+}
+
+const RenderItem = ({ item, index, setEditObj }) => {
+  const [visible, setVisible] = useState(false)
+  const style = index % 2 !== 0 ? { background: 'rgba(232, 244, 255, 0.6)' } : {}
+  const [anchorEl, setAnchorEl] = React.useState(null)
+  const [deletePasswordApi] = useDeletePasswordApiMutation()
+  const dispatch = useDispatch()
+  const userId = useSelector(selectCurrentUserId)
+  const { createdAt, updatedAt } = getDates(item)
 
   const handleEditMode = () => {
     setEditObj({ edit: true, rowNumber: index })
   }
-  const handleDeleteItem = () => {
-    setEditObj({ edit: true, rowNumber: index })
+  const handleDeleteItem = async () => {
+    await deletePasswordApi({ userId, id: item.id }).then((response) => {
+      if (response.error) {
+        console.error(response.error)
+      } else {
+        dispatch(deletePassword({ index }))
+        handleClose()
+      }
+    })
   }
 
   const handleClose = () => {
@@ -229,7 +344,7 @@ const RenderItem = ({ item, index, setEditObj }) => {
             </Button>
           </Grid>
           <Grid item>
-            <Button size='small' onClick={handleEditMode} sx={{ textTransform: 'none', fontSize: 12, color: '#ec1d24' }}>
+            <Button size='small' onClick={handleDeleteItem} sx={{ textTransform: 'none', fontSize: 12, color: '#ec1d24' }}>
               <Grid container flexDirection='row' justifyContent='flex-start' alignItems='center'>
                 <Grid item style={{ paddingTop: '0.2em' }}>
                   <RemoveCircleIcon sx={{ width: '0.8em', height: '0.8em' }} />
@@ -309,13 +424,10 @@ export const Body = () => {
     })
   }, [])
 
-  const handleAddNewPassword = () => {
-    dispatch(addNewPassword())
-  }
   return (
     <Grid className={classes.bodyDataArea}>
       <Grid className={classes.bodyDataTable}>
-        <RenderColumnsTitles handleAddNewPassword={handleAddNewPassword} />
+        <RenderColumnsTitles />
         {passwords.map((password, index) => {
           return editObj.edit && index === editObj.rowNumber ? (
             <RenderEditItem key={`${index}-edit`} index={index} item={password} setEditObj={setEditObj} />
