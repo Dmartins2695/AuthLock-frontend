@@ -11,11 +11,19 @@ import {
   useCreatePasswordApiMutation,
   useDeletePasswordApiMutation,
   useGetPasswordsMutation,
+  useSetFavoriteApiMutation,
   useUpdatePasswordApiMutation
 } from '../../../features/password/passwordApiSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectCurrentUserId } from '../../../features/auth/authSlice'
-import { addNewPassword, deletePassword, selectCurrentPasswords, setPasswords, updatePassword } from '../../../features/password/passwordSlice'
+import {
+  addNewPassword,
+  deletePassword,
+  favoritePassword,
+  selectCurrentPasswords,
+  setPasswords,
+  updatePassword
+} from '../../../features/password/passwordSlice'
 import { i18n } from '../../../features/i18n/i18n'
 import { differenceInDays } from 'date-fns'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
@@ -276,6 +284,7 @@ const RenderItem = ({ item, index, setEditObj }) => {
   const style = index % 2 !== 0 ? { background: 'rgba(232, 244, 255, 0.6)' } : {}
   const [anchorEl, setAnchorEl] = React.useState(null)
   const [deletePasswordApi] = useDeletePasswordApiMutation()
+  const [setFavoriteApi] = useSetFavoriteApiMutation()
   const dispatch = useDispatch()
   const userId = useSelector(selectCurrentUserId)
   const { createdAt, updatedAt } = getDates(item)
@@ -301,7 +310,16 @@ const RenderItem = ({ item, index, setEditObj }) => {
   const open = Boolean(anchorEl)
   const id = open ? 'simple-popover' : undefined
 
-  const handleFavoriteButton = () => {}
+  const handleFavoriteButton = async () => {
+    await setFavoriteApi({ userId, id: item.id }).then((response) => {
+      if (response.error) {
+        console.error(response.error)
+      } else {
+        dispatch(favoritePassword({ index }))
+        handleClose()
+      }
+    })
+  }
   const handleItemMenu = (event) => {
     setAnchorEl(event.currentTarget)
   }
